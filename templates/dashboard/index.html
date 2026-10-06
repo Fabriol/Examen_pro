@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+{% from "_macros.html" import barra %}
+{% from "plan/_sesion.html" import fila_sesion %}
+{% block titulo %}Dashboard{% endblock %}
+{% block contenido %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <h1 class="h3 mb-0">Hola, {{ usuario.nombre_completo.split(" ")[0] }}</h1>
+    <small class="text-muted">Tu preparación para el Examen Complexivo de un vistazo.</small>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-primary" href="{{ url_for('examen.configurar') }}"><i class="bi bi-pencil-square"></i> Nuevo examen</a>
+    <a class="btn btn-outline-primary" href="{{ url_for('practica.index') }}"><i class="bi bi-laptop"></i> Práctica</a>
+  </div>
+</div>
+
+{# ---------- Tarjetas ---------- #}
+<div class="row g-2 mb-3">
+  {% set tarjetas = [
+    ("Intentos teóricos", usuario.total_intentos, "bi-journal-check"),
+    ("Mejor nota", "%.2f"|format(usuario.mejor_nota) if usuario.mejor_nota is not none else "—", "bi-trophy"),
+    ("Promedio", "%.2f"|format(usuario.nota_promedio) if usuario.nota_promedio is not none else "—", "bi-calculator"),
+    ("Última nota", "%.2f"|format(usuario.ultima_nota) if usuario.ultima_nota is not none else "—", "bi-clock-history"),
+    ("Tiempo practicado", usuario.tiempo_total_practicado|horas_legibles, "bi-hourglass-split"),
+    ("Días para el examen", stats_plan.dias_restantes if stats_plan else "—", "bi-calendar-event"),
+  ] %}
+  {% for titulo, valor, icono in tarjetas %}
+  <div class="col-6 col-md-4 col-xl-2">
+    <div class="card h-100 shadow-sm"><div class="card-body py-2">
+      <div class="small text-muted"><i class="bi {{ icono }}"></i> {{ titulo }}</div>
+      <div class="fs-4 fw-bold">{{ valor }}</div>
+    </div></div>
+  </div>
+  {% endfor %}
+  <div class="col-6 col-md-6 col-xl-6">
+    <div class="card h-100 shadow-sm border-{{ v.color if v else 'secondary' }}"><div class="card-body py-2 d-flex justify-content-between align-items-center">
+      <div>
+        <div class="small text-muted"><i class="bi bi-shield-check"></i> Veredicto actual</div>
+        <span class="badge fs-6 text-bg-{{ v.color if v else 'secondary' }}">{{ v.etiqueta if v else "—" }}</span>
+        {% if v %}<span class="small text-muted ms-1">índice {{ v.indice }}/100</span>{% endif %}
+      </div>
+      <a class="btn btn-sm btn-outline-dark" href="{{ url_for('plan.veredicto') }}">Detalle</a>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-6 col-xl-6">
+    <div class="card h-100 shadow-sm"><div class="card-body py-2">
+      <div class="small text-muted"><i class="bi bi-bullseye"></i> Nota final estimada</div>
+      <div class="fs-4 fw-bold">{{ "%.2f"|format(v.nota_final_estimada) if v and v.nota_final_estimada is not none else "—" }}
+        <small class="fs-6 text-muted">mínima {{ params.nota_minima }}</small></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="row g-3">
+  {# ---------- Columna principal ---------- #}
+  <div class="col-12 col-xl-8">
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fw-semibold">Evolución de la nota teórica</span>
+        {% if mejora %}
+          <span class="badge text-bg-{{ 'success' if mejora.diferencia > 0 else ('danger' if mejora.diferencia < 0 else 'secondary') }}">
+            {{ "↑" if mejora.diferencia > 0 else ("↓" if mejora.diferencia < 0 else "=") }} {{ "%+.2f"|format(mejora.diferencia) }} pts
+            {% if mejora.pct is not none %}({{ "%+.1f"|format(mejora.pct) }} %){% endif %} del primero al último
+          </span>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        {% if intentos %}<canvas id="grafica-evolucion" height="110"></canvas>
+        {% else %}<p class="text-muted mb-0">Aún no tienes intentos. <a href="{{ url_for('examen.configurar') }}">Haz tu primer examen</a>.</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-md-6">
+        <div class="card h-100"><div class="card-header fw-semibold">% de acierto por núcleo</div>
+          <div class="card-body"><canvas id="grafica-nucleos" height="180"></canvas></div></div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="card h-100"><div class="card-header fw-semibold">% de acierto por nivel</div>
+          <div class="card-body"><canvas id="grafica-niveles" height="180"></canvas></div></div>
+      </div>
+    </div>
+    <p class="small text-muted">{{ nota_pie }}</p>
+
+    <div class="card mb-3">
+      <div class="card-header fw-semibold d-flex justify-content-between">
+        <span>Práctica: nota por caso</span><a class="small" href="{{ url_for('practica.index') }}">Ver casos</a>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-6"><canvas id="grafica-casos" height="200"></canvas></div>
+          <div class="col-12 col-md-6">
+            {% if graficas.practica.notas|length > 1 %}<canvas id="grafica-practica" height="200"></canvas>
+            {% else %}<p class="small text-muted">La evolución de tus notas prácticas aparecerá con al menos dos intentos válidos.</p>{% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Qué debes estudiar</div>
+      <div class="card-body">
+        <h2 class="h6">Temas con menor % de acierto</h2>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle">
+            <tbody>
+              {% for t in temas_debiles %}
+              <tr>
+                <td>{{ t.nombre }} <small class="text-muted">N{{ t.nucleo }}</small></td>
+                <td style="min-width: 140px">
+                  {% if t.pct is none %}<span class="small text-muted">sin responder</span>
+                  {% else %}{{ barra(t.pct, "success" if t.pct >= 70 else ("warning" if t.pct >= 50 else "danger")) }}{% endif %}
+                </td>
+                <td class="text-end text-nowrap">
+                  <a class="btn btn-sm btn-outline-primary" href="{{ url_for('estudio.tema', slug=t.slug) }}">Estudiar tarjetas</a>
+                  <a class="btn btn-sm btn-primary" href="{{ url_for('examen.configurar', modo='tema', tema=t.slug) }}">Practicar tema</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <h2 class="h6 mt-3">Criterios prácticos más débiles</h2>
+        {% if criterios_debiles %}
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <tbody>
+              {% for caso, criterio, pct in criterios_debiles %}
+              <tr>
+                <td><span class="badge text-bg-dark">{{ caso.codigo }}</span> {{ criterio.id }} · {{ criterio.criterio }}</td>
+                <td style="min-width: 120px">{{ barra(pct, "success" if pct >= 70 else ("warning" if pct >= 50 else "danger")) }}</td>
+                <td class="text-end"><a class="btn btn-sm btn-outline-primary text-nowrap" href="{{ url_for('practica.caso', codigo=caso.codigo, criterio=criterio.id) }}">Practicar este criterio</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}<p class="small text-muted mb-0">Aparecerán tras tu primer intento práctico autoevaluado.</p>{% endif %}
+        <div class="text-end mt-2"><a class="small" href="{{ url_for('dashboard.debilidades') }}">Ver ranking completo →</a></div>
+      </div>
+    </div>
+  </div>
+
+  {# ---------- Columna lateral ---------- #}
+  <div class="col-12 col-xl-4">
+    <div class="card border-warning mb-3">
+      <div class="card-header fw-semibold bg-warning-subtle"><i class="bi bi-lightning-charge"></i> Hoy toca</div>
+      {% if stats_plan and stats_plan.hoy %}
+        <ul class="list-group list-group-flush">
+          {% for s in stats_plan.hoy %}{{ fila_sesion(s, hoy, etiquetas_tipo, etiquetas_fase) }}{% endfor %}
+        </ul>
+      {% elif stats_plan %}
+        <div class="card-body small text-muted">Hoy no tienes sesiones planificadas.</div>
+      {% else %}
+        <div class="card-body small">Aún no tienes plan. <a href="{{ url_for('plan.crear') }}">Crea tu plan de estudio</a>.</div>
+      {% endif %}
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Cobertura del banco</div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between small"><span>Respondidas</span><span>{{ resumen.respondidas_unicas }} / {{ resumen.total_banco }}</span></div>
+        {{ barra(resumen.cobertura_pct, "primary") }}
+        <div class="d-flex justify-content-between small mt-2"><span>Dominadas (última correcta)</span><span>{{ resumen.dominadas }} / {{ resumen.total_banco }}</span></div>
+        {{ barra((resumen.dominadas / resumen.total_banco * 100)|round(1), "success") }}
+        <div class="d-flex justify-content-between small mt-2"><span>Dominio estable</span><span>{{ resumen.dominadas_estables }} / {{ resumen.total_banco }}</span></div>
+        {{ barra(resumen.dominio_estable_pct, "info") }}
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
+        <span>Preguntas que has fallado</span>
+        <a class="btn btn-sm btn-danger {% if not n_falladas %}disabled{% endif %}" href="{{ url_for('examen.configurar', modo='fallidas') }}">Practicar solo estas ({{ n_falladas }})</a>
+      </div>
+      {% if ranking %}
+      <ul class="list-group list-group-flush small">
+        {% for p, e in ranking %}
+        <li class="list-group-item d-flex justify-content-between gap-2">
+          <span><strong>{{ p.codigo }}</strong> {{ p.enunciado[:70] }}{% if p.enunciado|length > 70 %}…{% endif %}</span>
+          <span class="text-nowrap"><span class="badge text-bg-danger">{{ e.fallos }} fallo{{ "s" if e.fallos != 1 }}</span>
+            {% if not e.fallada %}<span class="badge text-bg-success" title="Tu última respuesta fue correcta">✓</span>{% endif %}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}<div class="card-body small text-muted">Todavía no has fallado preguntas.</div>{% endif %}
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Accesos</div>
+      <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action" href="{{ url_for('dashboard.historial') }}"><i class="bi bi-clock-history"></i> Historial de intentos</a>
+        <a class="list-group-item list-group-item-action" href="{{ url_for('dashboard.debilidades') }}"><i class="bi bi-bar-chart"></i> Debilidades</a>
+        <a class="list-group-item list-group-item-action" href="{{ url_for('plan.pendientes_docente') }}"><i class="bi bi-question-circle"></i> Puntos por confirmar con tu docente</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script id="datos-graficas" type="application/json">{{ graficas|tojson }}</script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    if (!window.Chart) { return; }
+    var g = JSON.parse(document.getElementById('datos-graficas').textContent);
+    var COLORES = { success: '#198754', warning: '#ffc107', danger: '#dc3545', secondary: '#adb5bd' };
+    function colorPct(v) { return v === null ? '#adb5bd' : (v >= 70 ? '#198754' : (v >= 50 ? '#ffc107' : '#dc3545')); }
+    var escala10 = { y: { min: 0, max: 10 } };
+    var escala100 = { y: { min: 0, max: 100 } };
+
+    var evo = document.getElementById('grafica-evolucion');
+    if (evo) {
+      new Chart(evo, {
+        type: 'line',
+        data: { labels: g.evolucion.etiquetas, datasets: [
+          { label: 'Nota', data: g.evolucion.notas, borderColor: '#0d6efd', backgroundColor: 'rgba(13,110,253,.1)', fill: true, tension: .25 },
+          { label: 'Nota mínima', data: g.evolucion.notas.map(function () { return g.nota_minima; }), borderColor: '#dc3545', borderDash: [6, 4], pointRadius: 0 }
+        ] },
+        options: { scales: escala10, plugins: { tooltip: { callbacks: { afterLabel: function (c) { return g.evolucion.descripciones[c.dataIndex]; } } } } }
+      });
+    }
+    [['grafica-nucleos', g.nucleos], ['grafica-niveles', g.niveles]].forEach(function (par) {
+      var el = document.getElementById(par[0]);
+      if (!el) { return; }
+      new Chart(el, {
+        type: 'bar',
+        data: { labels: par[1].etiquetas, datasets: [{ label: '% acierto', data: par[1].valores, backgroundColor: par[1].valores.map(colorPct) }] },
+        options: { scales: escala100, plugins: { legend: { display: false } } }
+      });
+    });
+    var casos = document.getElementById('grafica-casos');
+    if (casos) {
+      new Chart(casos, {
+        type: 'bar',
+        data: { labels: g.casos.etiquetas, datasets: [
+          { label: 'Última', data: g.casos.ultima, backgroundColor: g.casos.colores.map(function (c) { return COLORES[c] || '#adb5bd'; }) },
+          { label: 'Mejor', data: g.casos.mejor, backgroundColor: 'rgba(13,110,253,.35)' }
+        ] },
+        options: { scales: escala10 }
+      });
+    }
+    var prac = document.getElementById('grafica-practica');
+    if (prac) {
+      new Chart(prac, {
+        type: 'line',
+        data: { labels: g.practica.etiquetas.map(function (e, i) { return e + ' ' + g.practica.casos[i]; }),
+          datasets: [{ label: 'Nota práctica (autoevaluada)', data: g.practica.notas, borderColor: '#6f42c1', tension: .25 }] },
+        options: { scales: escala10 }
+      });
+    }
+  })();
+</script>
+{% endblock %}

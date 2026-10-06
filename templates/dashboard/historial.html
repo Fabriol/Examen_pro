@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block titulo %}Historial{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Historial de intentos</h1>
+  <a class="btn btn-outline-secondary" href="{{ url_for('dashboard.index') }}">Dashboard</a>
+</div>
+{% if filas %}
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr><th>Fecha</th><th>Tipo</th><th>Filtro / caso</th><th>Nota</th><th>Detalle</th><th>Duración</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for f in filas %}
+      <tr class="{{ 'table-success' if f.nota >= 7 else ('table-warning' if f.nota >= 5 else 'table-danger') }}">
+        <td class="text-nowrap">{{ f.fecha|fecha_hora }}</td>
+        <td>{% if f.tipo == "Práctico" %}<i class="bi bi-laptop"></i>{% else %}<i class="bi bi-book"></i>{% endif %} {{ f.tipo }}</td>
+        <td>{{ f.detalle }}</td>
+        <td class="fw-semibold">{{ "%.2f"|format(f.nota) }}</td>
+        <td class="small">{{ f.extra }}</td>
+        <td>{{ f.duracion|mmss if f.duracion is not none else "—" }}</td>
+        <td class="text-end"><a class="btn btn-sm btn-outline-dark" href="{{ f.url }}">Revisar</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="small text-muted">Verde ≥ 7 · amarillo 5–6.9 · rojo &lt; 5.</p>
+{% else %}
+<div class="alert alert-info">Aún no tienes intentos completados.</div>
+{% endif %}
+{% endblock %}

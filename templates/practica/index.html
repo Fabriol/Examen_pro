@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block titulo %}Práctica{% endblock %}
+{% block contenido %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <h1 class="h3 mb-0">Casos prácticos</h1>
+    <small class="text-muted">Resuelve cada caso en tu propio IDE; aquí tienes el enunciado, la checklist, el cronómetro y la autoevaluación.</small>
+  </div>
+</div>
+
+{% if pendiente %}
+<div class="alert alert-warning d-flex flex-wrap justify-content-between align-items-center gap-2">
+  <span><i class="bi bi-hourglass-split"></i> Tienes un intento práctico sin terminar: <strong>{{ pendiente.caso.codigo }} · {{ pendiente.caso.titulo }}</strong>.</span>
+  <a class="btn btn-sm btn-warning" href="{{ url_for('practica.intento', intento_id=pendiente.id) }}">Continuar</a>
+</div>
+{% endif %}
+
+<div class="row g-3">
+  {% for f in filas %}
+  {% set c = f.caso %}
+  <div class="col-12 col-md-6">
+    <div class="card h-100 shadow-sm border-start border-4 border-{{ f.semaforo }}">
+      <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-start gap-2">
+          <div>
+            <span class="badge text-bg-dark">{{ c.codigo }}</span>
+            <span class="badge text-bg-light border">N{{ c.nucleo }} · {{ nombres_nucleo[c.nucleo] }}</span>
+          </div>
+          <span class="semaforo semaforo-{{ f.semaforo }}" title="Semáforo: verde ≥ {{ '%.1f'|format(nota_minima + margen) }}, amarillo ≥ {{ '%.1f'|format(nota_minima) }}, rojo por debajo"></span>
+        </div>
+        <h2 class="h5 mt-2">{{ c.titulo }}</h2>
+        <p class="small text-muted mb-2">{{ c.tecnologia }}</p>
+        <div class="row text-center g-2 mb-3">
+          <div class="col-3"><div class="small text-muted">Intentos</div><div class="fw-semibold">{{ f.n_intentos }}</div></div>
+          <div class="col-3"><div class="small text-muted">Última</div><div class="fw-semibold">{{ "%.2f"|format(f.ultima_nota) if f.ultima_nota is not none else "—" }}</div></div>
+          <div class="col-3"><div class="small text-muted">Mejor</div><div class="fw-semibold">{{ "%.2f"|format(f.mejor_nota) if f.mejor_nota is not none else "—" }}</div></div>
+          <div class="col-3"><div class="small text-muted">Defensa</div><div class="fw-semibold">{{ "%.0f"|format(f.dominio_defensa) }}%</div></div>
+        </div>
+        <p class="small mb-3">
+          Nota del caso (prom. últimos 2 válidos):
+          <strong>{{ "%.2f"|format(f.nota_caso) if f.nota_caso is not none else "sin intentos válidos" }}</strong>
+          {% if f.nota_ajustada is not none %}<span class="text-muted">· ajustada {{ "%.2f"|format(f.nota_ajustada) }}</span>{% endif %}
+        </p>
+        <div class="mt-auto d-flex flex-wrap gap-2">
+          <a class="btn btn-primary" href="{{ url_for('practica.caso', codigo=c.codigo) }}"><i class="bi bi-eye"></i> Ver caso</a>
+          <a class="btn btn-outline-dark" href="{{ url_for('practica.defensa', codigo=c.codigo) }}"><i class="bi bi-mic"></i> Defensa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<p class="small text-muted mt-3">
+  Las notas prácticas son <strong>autoevaluadas</strong>: el veredicto les resta {{ cfg.DESCUENTO_AUTOEVALUACION }} puntos por prudencia.
+</p>
+{% endblock %}

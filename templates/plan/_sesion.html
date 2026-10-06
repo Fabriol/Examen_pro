@@ -1,0 +1,33 @@
+{# Fila de una sesión del plan con sus acciones. Uso: {% from "plan/_sesion.html" import fila_sesion %} #}
+{% macro fila_sesion(s, hoy, etiquetas_tipo, etiquetas_fase, acciones=true) %}
+  {% if s.estado == "completada" %}{% set color = "success" %}
+  {% elif s.estado == "omitida" %}{% set color = "secondary" %}
+  {% elif s.fecha < hoy %}{% set color = "danger" %}
+  {% elif s.fecha == hoy %}{% set color = "warning" %}
+  {% else %}{% set color = "light" %}{% endif %}
+  <li class="list-group-item d-flex flex-wrap align-items-center justify-content-between gap-2 sesion-{{ color }}">
+    <div class="d-flex align-items-start gap-2">
+      <i class="bi {{ 'bi-laptop' if s.es_practica else 'bi-book' }} fs-5 {{ 'text-primary' if s.es_practica else 'text-dark' }}"
+         title="{{ 'Práctica' if s.es_practica else 'Teoría' }}"></i>
+      <div>
+        <div class="fw-semibold {% if s.estado == 'omitida' %}text-decoration-line-through text-muted{% endif %}">{{ s.titulo }}</div>
+        <div class="small text-muted">
+          {{ etiquetas_fase.get(s.fase, s.fase) }} · {{ etiquetas_tipo.get(s.tipo, s.tipo) }} · {{ s.minutos_planificados }} min
+          {% if s.minutos_planificados > 50 %}<span title="Pausa sugerida">· pausa de 10 min cada 50</span>{% endif %}
+          {% if s.estado == "completada" %}· <span class="text-success">hecha{% if s.minutos_reales %} en {{ s.minutos_reales }} min{% endif %}{% if s.resultado_total %} · {{ s.resultado_aciertos }}/{{ s.resultado_total }}{% endif %}</span>{% endif %}
+          {% if s.estado == "omitida" %}· omitida{% endif %}
+          {% if s.estado == "pendiente" and s.fecha < hoy %}· <span class="text-danger">atrasada ({{ s.fecha|fecha_corta }})</span>{% endif %}
+        </div>
+      </div>
+    </div>
+    {% if acciones and s.estado == "pendiente" and s.plan.activo %}
+    <div class="d-flex gap-1">
+      <a class="btn btn-sm btn-primary" href="{{ url_for('plan.iniciar_sesion', sesion_id=s.id) }}"><i class="bi bi-play-fill"></i> Iniciar</a>
+      <form method="post" action="{{ url_for('plan.omitir_sesion', sesion_id=s.id) }}" onsubmit="return confirm('¿Omitir esta sesión? El plan se reprogramará.');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-sm btn-outline-secondary" type="submit">Omitir</button>
+      </form>
+    </div>
+    {% endif %}
+  </li>
+{% endmacro %}

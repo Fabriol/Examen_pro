@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block titulo %}Crear plan de estudio{% endblock %}
+{% macro errores(campo) %}{% for e in campo.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}{% endmacro %}
+{% block contenido %}
+<h1 class="h3 mb-1">{{ "Nuevo plan de estudio" if activo else "Crear plan de estudio" }}</h1>
+<p class="text-muted">{% if activo %}Al guardar, tu plan actual quedará inactivo (se conserva su historial).{% else %}Solo puede haber un plan activo por usuario.{% endif %}</p>
+
+<form method="post" action="{{ url_for('plan.crear') }}" novalidate>
+  {{ form.hidden_tag() }}
+  <div class="card shadow-sm mb-3">
+    <div class="card-header fw-semibold">1. Fechas</div>
+    <div class="card-body row g-3">
+      <div class="col-12 col-md-6">
+        {{ form.fecha_examen.label(class="form-label") }}
+        {{ form.fecha_examen(class="form-control" + (" is-invalid" if form.fecha_examen.errors else "")) }}
+        <div class="form-text">Debe ser posterior a hoy. <span class="badge text-bg-warning">confirmar con tu docente</span></div>
+        {{ errores(form.fecha_examen) }}
+      </div>
+      <div class="col-12 col-md-6">
+        {{ form.fecha_inicio.label(class="form-label") }}
+        {{ form.fecha_inicio(class="form-control") }}
+        <div class="form-text">Por defecto, hoy.</div>
+        {{ errores(form.fecha_inicio) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-header fw-semibold">2. Horas de estudio por día (0 = descanso)</div>
+    <div class="card-body">
+      <div class="row g-2">
+        {% for d in dias %}
+        {% set campo = form[d] %}
+        <div class="col-6 col-sm-4 col-lg">
+          {{ campo.label(class="form-label small") }}
+          {{ campo(class="form-control" + (" is-invalid" if campo.errors else ""), type="number", min="0", max="12", step="0.5") }}
+          {{ errores(campo) }}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="form-text">Entre 0 y 12 horas, en pasos de 0.5. Al menos un día debe tener horas.</div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-header fw-semibold">3. Nota y ponderación</div>
+    <div class="card-body row g-3">
+      <div class="col-12 col-md-4">
+        {{ form.nota_minima.label(class="form-label") }}
+        {{ form.nota_minima(class="form-control" + (" is-invalid" if form.nota_minima.errors else ""), type="number", min="0", max="10", step="0.1") }}
+        <div class="form-text">Confírmala con tu instituto.</div>
+        {{ errores(form.nota_minima) }}
+      </div>
+      <div class="col-6 col-md-4">
+        {{ form.peso_teoria.label(class="form-label") }}
+        {{ form.peso_teoria(class="form-control" + (" is-invalid" if form.peso_teoria.errors else ""), type="number", min="0", max="100", step="5") }}
+        <div class="form-text">Confírmalos con tu docente.</div>
+        {{ errores(form.peso_teoria) }}
+      </div>
+      <div class="col-6 col-md-4">
+        {{ form.peso_practica.label(class="form-label") }}
+        {{ form.peso_practica(class="form-control" + (" is-invalid" if form.peso_practica.errors else ""), type="number", min="0", max="100", step="5") }}
+        <div class="form-text">Teoría + práctica = 100 %.</div>
+        {{ errores(form.peso_practica) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-header fw-semibold">4. Reparto del tiempo</div>
+    <div class="card-body">
+      {{ form.porcentaje_tiempo_practica.label(class="form-label") }}
+      <div class="d-flex align-items-center gap-3">
+        <input type="range" class="form-range" min="0" max="100" step="5" id="rango-practica" value="{{ form.porcentaje_tiempo_practica.data or 50 }}">
+        {{ form.porcentaje_tiempo_practica(class="form-control", style="max-width: 100px", type="number", min="0", max="100") }}
+      </div>
+      <div class="form-text">Porcentaje de tus horas para los casos prácticos (el resto, teoría). Por defecto 50 %.</div>
+      {{ errores(form.porcentaje_tiempo_practica) }}
+    </div>
+  </div>
+
+  {{ form.enviar(class="btn btn-primary btn-lg") }}
+  <a class="btn btn-link" href="{{ url_for('plan.index') }}">Cancelar</a>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var rango = document.getElementById('rango-practica');
+    var campo = document.getElementById('porcentaje_tiempo_practica');
+    rango.addEventListener('input', function () { campo.value = rango.value; });
+    campo.addEventListener('input', function () { rango.value = campo.value; });
+    var teoria = document.getElementById('peso_teoria');
+    var practica = document.getElementById('peso_practica');
+    teoria.addEventListener('input', function () {
+      var v = parseInt(teoria.value, 10);
+      if (!isNaN(v) && v >= 0 && v <= 100) { practica.value = 100 - v; }
+    });
+  })();
+</script>
+{% endblock %}

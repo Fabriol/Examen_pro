@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block titulo %}Puntos por confirmar con tu docente{% endblock %}
+{% block contenido %}
+<h1 class="h3 mb-1">Puntos por confirmar con tu docente</h1>
+<p class="text-muted">Estos datos no están confirmados; la app usa valores provisionales. Marca cada punto cuando lo confirmes
+  (se guarda en este navegador).</p>
+
+{% set puntos = [
+  ("nota-minima", "Nota mínima de aprobación", "Valor usado: " ~ params.nota_minima ~ " (placeholder " ~ cfg.NOTA_MINIMA_APROBACION ~ ")."),
+  ("ponderacion", "Ponderación teoría / práctica", "Valor usado: " ~ ((params.peso_teoria * 100)|round|int) ~ " % / " ~ ((params.peso_practica * 100)|round|int) ~ " %."),
+  ("duracion-practico", "Duración del examen práctico", "Placeholder: " ~ cfg.TIEMPO_PRACTICA_DEFAULT_MIN ~ " min por caso (los casos sugieren más para estudiar)."),
+  ("fecha-examen", "Fecha del examen", "Se define al crear tu plan de estudio."),
+  ("motor-n2", "Motor de base de datos del caso N2", "Supuesto: " ~ cfg.MOTOR_BD_N2 ~ ". La teoría del banco usa sintaxis de MySQL."),
+  ("defensa", "Formato de la defensa oral", "Supuesto: " ~ cfg.FORMATO_DEFENSA ~ "."),
+  ("n3-requisitos", "Requisitos 19–22 y 24 del caso N3", "La numeración del PDF salta del 18 al 23 y del 23 al 25: pueden faltar requisitos."),
+  ("n4-duracion", "Formato de la duración en la API del caso N4", "¿mm:ss o segundos? Inspecciona el JSON antes de calcular el tiempo total."),
+  ("n4-navegacion", "Interpretación de \"dos sistemas de navegación\" en N4", "Interpretación usada: stack + tabs/drawer."),
+] %}
+
+<div class="card shadow-sm mb-3">
+  <ul class="list-group list-group-flush" id="lista-pendientes">
+    {% for clave, titulo, detalle in puntos %}
+    <li class="list-group-item">
+      <div class="form-check">
+        <input class="form-check-input pendiente-docente" type="checkbox" id="pd-{{ clave }}" data-clave="{{ clave }}">
+        <label class="form-check-label" for="pd-{{ clave }}"><strong>{{ titulo }}</strong></label>
+        <div class="small text-muted">{{ detalle }}</div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="card-footer small"><span id="contador-pendientes">0</span> de {{ puntos|length }} confirmados</div>
+</div>
+
+<h2 class="h5">Ambigüedades detectadas en los casos prácticos</h2>
+<div class="row g-3">
+  {% for caso in casos %}
+  <div class="col-12 col-lg-6">
+    <div class="card h-100 border-warning">
+      <div class="card-header"><strong>{{ caso.codigo }}</strong> · {{ caso.titulo }}</div>
+      <ul class="list-group list-group-flush small">
+        {% for a in caso.ambiguedades %}<li class="list-group-item">{{ a }}</li>{% else %}<li class="list-group-item text-muted">Sin ambigüedades registradas.</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="mt-3 d-flex gap-2">
+  <a class="btn btn-outline-primary" href="{{ url_for('plan.index') }}">Volver al plan</a>
+  <a class="btn btn-outline-dark" href="{{ url_for('plan.veredicto') }}">Ver veredicto</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var CLAVE = 'pendientes-docente';
+    var casillas = document.querySelectorAll('.pendiente-docente');
+    var estado = {};
+    try { estado = JSON.parse(localStorage.getItem(CLAVE) || '{}'); } catch (e) { estado = {}; }
+    function contar() {
+      document.getElementById('contador-pendientes').textContent =
+        Array.prototype.filter.call(casillas, function (c) { return c.checked; }).length;
+    }
+    casillas.forEach(function (c) {
+      c.checked = !!estado[c.dataset.clave];
+      c.addEventListener('change', function () {
+        estado[c.dataset.clave] = c.checked;
+        try { localStorage.setItem(CLAVE, JSON.stringify(estado)); } catch (e) { /* sin almacenamiento */ }
+        contar();
+      });
+    });
+    contar();
+  })();
+</script>
+{% endblock %}

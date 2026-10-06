@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% from "_macros.html" import barra %}
+{% block titulo %}Veredicto de aptitud{% endblock %}
+{% macro tabla_criterios(titulo, criterios) %}
+<div class="card mb-3">
+  <div class="card-header fw-semibold">{{ titulo }}</div>
+  <div class="table-responsive">
+    <table class="table table-sm align-middle mb-0">
+      <thead class="table-light"><tr><th style="width: 50px"></th><th>Criterio</th><th>Valor actual</th><th>Meta</th></tr></thead>
+      <tbody>
+        {% for c in criterios %}
+        <tr class="{% if c.cumple is sameas false %}table-danger{% endif %}">
+          <td class="text-center fs-5">
+            {% if c.cumple is sameas true %}<span class="text-success" title="Cumple">✓</span>
+            {% elif c.cumple is sameas false %}<span class="text-danger" title="No cumple">✗</span>
+            {% else %}<span class="text-muted" title="No aplica">–</span>{% endif %}
+          </td>
+          <td><strong>{{ c.codigo }}</strong> {{ c.descripcion }}{% if c.aviso %}<div class="small text-warning-emphasis">{{ c.aviso }}</div>{% endif %}</td>
+          <td>{{ c.valor }}</td>
+          <td class="text-nowrap">{{ c.meta }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endmacro %}
+
+{% block contenido %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+  <h1 class="h3 mb-0">Veredicto de aptitud</h1>
+  <a class="btn btn-outline-secondary" href="{{ url_for('plan.pendientes_docente') }}"><i class="bi bi-question-circle"></i> Puntos por confirmar con tu docente</a>
+</div>
+<div class="alert alert-light border small"><i class="bi bi-info-circle"></i> {{ v.aviso_orientativo }}</div>
+
+<div class="card shadow-sm mb-3 border-{{ v.color }} border-2">
+  <div class="card-body">
+    <div class="row g-3 align-items-center">
+      <div class="col-12 col-md-4 text-center">
+        <div class="small text-muted">Veredicto</div>
+        <div class="display-6 fw-bold"><span class="badge text-bg-{{ v.color }}">{{ v.etiqueta }}</span></div>
+      </div>
+      <div class="col-6 col-md-4 text-center">
+        <div class="small text-muted">Nota final estimada</div>
+        <div class="fs-2 fw-bold">{{ "%.2f"|format(v.nota_final_estimada) if v.nota_final_estimada is not none else "—" }}</div>
+        <div class="small text-muted">{{ (params.peso_teoria * 100)|round|int }} % teoría ({{ "%.2f"|format(v.nota_ref_teoria) if v.nota_ref_teoria is not none else "—" }}) +
+          {{ (params.peso_practica * 100)|round|int }} % práctica ajustada ({{ "%.2f"|format(v.nota_practica_ajustada) if v.nota_practica_ajustada is not none else "—" }})</div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="small text-muted text-center">Índice de preparación</div>
+        <div class="fs-2 fw-bold text-center">{{ v.indice }}<small class="fs-6 text-muted">/100</small></div>
+        {{ barra(v.indice, "success" if v.indice >= 75 else ("warning" if v.indice >= 50 else "danger")) }}
+      </div>
+    </div>
+    <p class="small text-muted mb-0 mt-3">Nota mínima: {{ params.nota_minima }} (+ margen de seguridad {{ cfg.MARGEN_SEGURIDAD }}) <span class="badge text-bg-warning">confirmar con tu docente</span></p>
+  </div>
+</div>
+
+{% if v.estado == "SIN_DATOS" %}
+<div class="card border-secondary mb-3">
+  <div class="card-header fw-semibold">Faltan datos para emitir el veredicto</div>
+  <ul class="list-group list-group-flush">
+    {% for f in v.faltantes %}
+    <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <span>{{ f.texto }}</span>
+      <a class="btn btn-sm btn-primary" href="{{ url_for(f.endpoint, **f.params) }}">Hacerlo ahora</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if v.parcial %}
+  <div class="card-footer small"><strong>Veredicto parcial:</strong> {% for p in v.parcial %}<div>{{ p }}</div>{% endfor %}</div>
+  {% endif %}
+</div>
+{% elif v.estado == "EN_RIESGO" %}
+<div class="alert alert-warning">
+  <strong>Tu nota estimada alcanza la mínima, pero fallan estos criterios:</strong>
+  <ul class="mb-0">
+    {% for c in v.fallidos %}<li>{{ c.codigo }} · {{ c.descripcion }}: {{ c.valor }} (meta {{ c.meta }})</li>{% endfor %}
+    {% if v.eslabon_debil %}<li>Eslabón débil: la teoría o la práctica está por debajo de la nota mínima.</li>{% endif %}
+  </ul>
+</div>
+{% elif v.estado == "NO_APTO" %}
+<div class="alert alert-danger"><strong>Tu nota final estimada está por debajo de la mínima.</strong> Sigue el plan y las recomendaciones.</div>
+{% elif v.estado == "APTO" %}
+<div class="alert alert-success"><strong>¡Cumples todos los criterios!</strong> Mantén el ritmo hasta el examen y no bajes la guardia.</div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-12 col-xl-7">
+    {{ tabla_criterios("Teoría", v.criterios_teoria) }}
+    {{ tabla_criterios("Práctica", v.criterios_practica) }}
+    {{ tabla_criterios("Común", v.criterios_comunes) }}
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Notas por caso (ajustadas −{{ cfg.DESCUENTO_AUTOEVALUACION }})</div>
+      <div class="card-body d-flex flex-wrap gap-3">
+        {% for codigo, nota in v.notas_caso.items() %}
+          <div class="text-center">
+            <div class="small text-muted">{{ codigo }}</div>
+            <span class="badge fs-6 text-bg-{{ 'secondary' if nota is none else ('success' if nota >= params.nota_minima + cfg.MARGEN_SEGURIDAD else ('warning' if nota >= params.nota_minima else 'danger')) }}">{{ "%.2f"|format(nota) if nota is not none else "—" }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-xl-5">
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Recomendaciones</div>
+      {% if v.recomendaciones %}
+      <ul class="list-group list-group-flush">
+        {% for r in v.recomendaciones %}
+        <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
+          <span>{{ r.texto }}</span>
+          <a class="btn btn-sm btn-outline-primary text-nowrap" href="{{ url_for(r.endpoint, **r.params) }}">Ir</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}<div class="card-body text-muted">Sin recomendaciones: vas muy bien.</div>{% endif %}
+    </div>
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Proyección al día del examen <span class="badge text-bg-light border">estimación</span></div>
+      <div class="card-body">
+        {% if v.proyeccion is not none %}<div class="fs-3 fw-bold">{{ "%.2f"|format(v.proyeccion) }}</div>{% endif %}
+        <div class="small text-muted">{{ v.proyeccion_msg }}</div>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Suficiencia de tiempo</div>
+      <div class="card-body">
+        {% if v.suficiencia %}
+          <span class="badge fs-6 text-bg-{{ 'success' if v.suficiencia == 'Suficiente' else ('warning' if v.suficiencia == 'Justo' else 'danger') }}">{{ v.suficiencia }}</span>
+        {% endif %}
+        <div class="small text-muted mt-1">{{ v.suficiencia_msg }}</div>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Evolución del índice</div>
+      <div class="card-body">
+        {% if evolucion.fechas|length > 1 %}
+          <canvas id="grafica-indice" height="180"></canvas>
+        {% else %}
+          <p class="small text-muted mb-0">Se guarda una foto diaria del veredicto; la gráfica aparece a partir del segundo día.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-secondary small mt-2"><i class="bi bi-exclamation-circle"></i> {{ v.aviso_fijo }}</div>
+<script id="datos-evolucion" type="application/json">{{ evolucion|tojson }}</script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var lienzo = document.getElementById('grafica-indice');
+    if (!lienzo || !window.Chart) { return; }
+    var d = JSON.parse(document.getElementById('datos-evolucion').textContent);
+    new Chart(lienzo, {
+      type: 'line',
+      data: { labels: d.fechas, datasets: [{ label: 'Índice de preparación', data: d.indices, borderColor: '#0d6efd',
+        backgroundColor: 'rgba(13,110,253,.1)', fill: true, tension: .25 }] },
+      options: { scales: { y: { min: 0, max: 100 } }, plugins: { legend: { display: false } } }
+    });
+  })();
+</script>
+{% endblock %}

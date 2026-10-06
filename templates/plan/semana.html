@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block titulo %}Calendario del plan{% endblock %}
+{% block contenido %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <h1 class="h3 mb-0">Calendario {{ "semanal" if vista == "semana" else "mensual" }}</h1>
+  <div class="d-flex flex-wrap gap-2">
+    <div class="btn-group">
+      <a class="btn btn-outline-secondary" href="{{ url_for('plan.semana', vista=vista, fecha=anterior.isoformat()) }}"><i class="bi bi-chevron-left"></i></a>
+      <a class="btn btn-outline-secondary" href="{{ url_for('plan.semana', vista=vista) }}">Hoy</a>
+      <a class="btn btn-outline-secondary" href="{{ url_for('plan.semana', vista=vista, fecha=siguiente.isoformat()) }}"><i class="bi bi-chevron-right"></i></a>
+    </div>
+    <div class="btn-group">
+      <a class="btn btn-{{ 'primary' if vista == 'semana' else 'outline-primary' }}" href="{{ url_for('plan.semana', vista='semana', fecha=referencia.isoformat()) }}">Semana</a>
+      <a class="btn btn-{{ 'primary' if vista == 'mes' else 'outline-primary' }}" href="{{ url_for('plan.semana', vista='mes', fecha=referencia.isoformat()) }}">Mes</a>
+    </div>
+    <a class="btn btn-outline-dark" href="{{ url_for('plan.index') }}">Volver al plan</a>
+  </div>
+</div>
+
+<div class="d-flex flex-wrap gap-3 small mb-2">
+  <span><span class="leyenda bg-success"></span> Completada</span>
+  <span><span class="leyenda bg-warning"></span> Hoy, pendiente</span>
+  <span><span class="leyenda bg-danger"></span> Atrasada</span>
+  <span><span class="leyenda bg-secondary"></span> Omitida</span>
+  <span><span class="leyenda bg-white border"></span> Futura</span>
+  <span><i class="bi bi-book"></i> Teoría</span>
+  <span><i class="bi bi-laptop text-primary"></i> Práctica</span>
+  <span class="text-muted">Examen: {{ plan.fecha_examen|fecha_corta }}</span>
+</div>
+
+<div class="calendario {{ 'calendario-mes' if vista == 'mes' else 'calendario-semana' }}">
+  {% for nombre in ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"] %}
+    <div class="calendario-cabecera d-none d-md-block">{{ nombre }}</div>
+  {% endfor %}
+  {% for dia in dias %}
+    {% set sesiones = por_fecha.get(dia, []) %}
+    <div class="calendario-dia {% if dia == hoy %}es-hoy{% endif %} {% if vista == 'mes' and dia.month != referencia.month %}fuera-mes{% endif %} {% if dia == plan.fecha_examen %}es-examen{% endif %}">
+      <div class="d-flex justify-content-between small fw-semibold mb-1">
+        <span>{{ dia|dia_semana_corto }} {{ dia.day }}</span>
+        {% if sesiones %}<span class="text-muted">{{ sesiones|sum(attribute='minutos_planificados') }} min</span>{% endif %}
+      </div>
+      {% if dia == plan.fecha_examen %}<div class="badge text-bg-primary w-100 mb-1">EXAMEN</div>{% endif %}
+      {% for s in sesiones %}
+        {% if s.estado == "completada" %}{% set c = "success" %}
+        {% elif s.estado == "omitida" %}{% set c = "secondary" %}
+        {% elif s.fecha < hoy %}{% set c = "danger" %}
+        {% elif s.fecha == hoy %}{% set c = "warning" %}
+        {% else %}{% set c = "light" %}{% endif %}
+        <a class="sesion-cal text-bg-{{ c }} {% if c == 'light' %}border{% endif %}"
+           href="{{ url_for('plan.iniciar_sesion', sesion_id=s.id) if s.estado == 'pendiente' else '#' }}"
+           title="{{ etiquetas_fase.get(s.fase) }} · {{ s.titulo }} · {{ s.minutos_planificados }} min">
+          <i class="bi {{ 'bi-laptop' if s.es_practica else 'bi-book' }}"></i>
+          {% if vista == "semana" %}{{ s.titulo }} <small>({{ s.minutos_planificados }}′)</small>{% else %}{{ etiquetas_tipo.get(s.tipo) }}{% endif %}
+        </a>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block titulo %}{{ titulo }}{% endblock %}
+{% block contenido %}
+{% include "_sesion_widget.html" %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <h1 class="h4 mb-0">{{ titulo }}</h1>
+    <small class="text-muted">{{ subtitulo }}</small>
+  </div>
+  <div class="d-flex gap-2">
+    {% if slug %}
+    <a class="btn btn-sm btn-primary" href="{{ url_for('examen.configurar', modo='tema', tema=slug) }}"><i class="bi bi-pencil-square"></i> Practicar este tema</a>
+    {% endif %}
+    <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('estudio.index') }}">Todos los temas</a>
+  </div>
+</div>
+
+<div class="alert alert-light border small">
+  Las tarjetas solo ordenan tu repaso ("no la sabía" aparece primero la próxima vez); <strong>no cambian tu nota, tu dominio ni tu veredicto</strong>.
+</div>
+
+{% if es_falladas and casos_defensa %}
+<div class="card mb-3">
+  <div class="card-body py-2 small">
+    <strong>Repaso de defensa:</strong>
+    {% for c in casos_defensa %}
+      <a class="btn btn-sm btn-outline-dark ms-1 {% if c.codigo == 'P2' %}fw-bold{% endif %}" href="{{ url_for('practica.defensa', codigo=c.codigo) }}">{{ c.codigo }}</a>
+    {% endfor %}
+    <span class="text-muted ms-2">El día antes del examen: repaso ligero y descanso.</span>
+  </div>
+</div>
+{% endif %}
+
+{% if not tarjetas %}
+  <div class="alert alert-success">No hay tarjetas para repasar aquí. {% if es_falladas %}¡No tienes preguntas falladas!{% endif %}</div>
+{% else %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-9">
+    <div class="d-flex justify-content-between small text-muted mb-2">
+      <span>Tarjeta <span id="t-num">1</span> de {{ tarjetas|length }}</span>
+      <span id="t-meta"></span>
+    </div>
+    <div class="progress mb-3" style="height: 6px"><div id="t-progreso" class="progress-bar" style="width: 0%"></div></div>
+
+    <div class="card shadow-sm tarjeta-estudio" id="tarjeta">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge text-bg-secondary" id="t-previo"></span>
+        </div>
+        <div id="t-frente" class="enunciado-pregunta"></div>
+        <div id="t-reverso" class="mt-3 d-none">
+          <ul class="list-group" id="t-opciones"></ul>
+        </div>
+      </div>
+      <div class="card-footer d-flex flex-wrap gap-2 justify-content-center">
+        <button type="button" class="btn btn-outline-primary" id="t-voltear"><i class="bi bi-arrow-repeat"></i> Ver respuesta</button>
+        <button type="button" class="btn btn-success d-none" id="t-sabia"><i class="bi bi-hand-thumbs-up"></i> La sabía</button>
+        <button type="button" class="btn btn-danger d-none" id="t-nosabia"><i class="bi bi-hand-thumbs-down"></i> No la sabía</button>
+      </div>
+    </div>
+
+    <div id="t-fin" class="card border-success d-none">
+      <div class="card-body text-center">
+        <h2 class="h5">¡Repaso terminado!</h2>
+        <p class="mb-3">Sabías <strong id="t-sabias">0</strong> de {{ tarjetas|length }} tarjetas.</p>
+        <a class="btn btn-outline-primary" href="{{ request.full_path }}">Repasar de nuevo (las que no sabías primero)</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script id="datos-tarjetas" type="application/json">{{ tarjetas|tojson }}</script>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sesion.js') }}"></script>
+{% if tarjetas %}
+<script>
+  (function () {
+    'use strict';
+    var tarjetas = JSON.parse(document.getElementById('datos-tarjetas').textContent);
+    var csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    var url = "{{ url_for('estudio.registrar_tarjeta') }}";
+    var i = 0, sabias = 0;
+    function $(id) { return document.getElementById(id); }
+
+    function mostrar() {
+      var t = tarjetas[i];
+      $('t-num').textContent = i + 1;
+      $('t-meta').textContent = t.codigo + ' · ' + t.tema + ' · ' + t.nivel;
+      $('t-progreso').style.width = (i / tarjetas.length * 100) + '%';
+      $('t-previo').textContent = t.previo === 'no_sabia' ? 'La última vez: no la sabías'
+        : (t.previo === 'sabia' ? 'La última vez: la sabías' : 'Nueva');
+      $('t-frente').textContent = t.enunciado;
+      var ul = $('t-opciones');
+      ul.innerHTML = '';
+      var li = document.createElement('li');
+      li.className = 'list-group-item text-success border-success bg-success-subtle';
+      li.textContent = '✓ ' + t.correcta;
+      ul.appendChild(li);
+      t.incorrectas.forEach(function (texto) {
+        var x = document.createElement('li');
+        x.className = 'list-group-item text-danger-emphasis';
+        x.textContent = '✗ ' + texto;
+        ul.appendChild(x);
+      });
+      $('t-reverso').classList.add('d-none');
+      $('t-voltear').classList.remove('d-none');
+      $('t-sabia').classList.add('d-none');
+      $('t-nosabia').classList.add('d-none');
+    }
+
+    function voltear() {
+      $('t-reverso').classList.remove('d-none');
+      $('t-voltear').classList.add('d-none');
+      $('t-sabia').classList.remove('d-none');
+      $('t-nosabia').classList.remove('d-none');
+    }
+
+    function responder(sabia) {
+      var t = tarjetas[i];
+      if (sabia) { sabias++; }
+      fetch(url, {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf },
+        body: JSON.stringify({ pregunta_id: t.id, sabia: sabia })
+      }).catch(function () { /* el repaso sigue aunque no se guarde */ });
+      i++;
+      if (i >= tarjetas.length) {
+        $('tarjeta').classList.add('d-none');
+        $('t-fin').classList.remove('d-none');
+        $('t-sabias').textContent = sabias;
+        $('t-progreso').style.width = '100%';
+      } else {
+        mostrar();
+      }
+    }
+
+    $('t-voltear').addEventListener('click', voltear);
+    $('t-sabia').addEventListener('click', function () { responder(true); });
+    $('t-nosabia').addEventListener('click', function () { responder(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) { return; }
+      if (e.key === ' ' && !$('t-voltear').classList.contains('d-none')) { voltear(); e.preventDefault(); }
+    });
+    mostrar();
+  })();
+</script>
+{% endif %}
+{% endblock %}

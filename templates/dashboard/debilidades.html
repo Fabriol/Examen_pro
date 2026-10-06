@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% from "_macros.html" import barra %}
+{% block titulo %}Debilidades{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Debilidades</h1>
+  <a class="btn btn-outline-secondary" href="{{ url_for('dashboard.index') }}">Dashboard</a>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-xl-6">
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Ranking de temas (de menor a mayor % de acierto)</div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead class="table-light"><tr><th>#</th><th>Tema</th><th style="min-width: 130px">% acierto</th><th>Dominio</th><th></th></tr></thead>
+          <tbody>
+            {% for t in temas %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ t.nombre }} <small class="text-muted">N{{ t.nucleo }}</small></td>
+              <td>{% if t.pct is none %}<span class="small text-muted">sin responder</span>{% else %}{{ barra(t.pct, "success" if t.pct >= 70 else ("warning" if t.pct >= 50 else "danger")) }}{% endif %}</td>
+              <td class="small">{{ t.dominadas }}/{{ t.total }}</td>
+              <td class="text-end text-nowrap">
+                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('estudio.tema', slug=t.slug) }}" title="Estudiar tarjetas"><i class="bi bi-card-text"></i></a>
+                <a class="btn btn-sm btn-primary" href="{{ url_for('examen.configurar', modo='tema', tema=t.slug) }}" title="Practicar tema"><i class="bi bi-pencil-square"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer small text-muted">{{ nota_pie }}</div>
+    </div>
+  </div>
+
+  <div class="col-12 col-xl-6">
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Ranking de criterios prácticos (último intento válido)</div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead class="table-light"><tr><th>Caso</th><th>Criterio</th><th style="min-width: 120px">% obtenido</th><th></th></tr></thead>
+          <tbody>
+            {% for caso, criterio, pct in criterios %}
+            <tr>
+              <td><span class="badge text-bg-dark">{{ caso.codigo }}</span></td>
+              <td>{{ criterio.id }} · {{ criterio.criterio }} <small class="text-muted">({{ "%g"|format(criterio.puntaje) }} pts)</small></td>
+              <td>{% if pct is none %}<span class="small text-muted">sin intentos</span>{% else %}{{ barra(pct, "success" if pct >= 70 else ("warning" if pct >= 50 else "danger")) }}{% endif %}</td>
+              <td class="text-end"><a class="btn btn-sm btn-outline-primary text-nowrap" href="{{ url_for('practica.caso', codigo=caso.codigo, criterio=criterio.id) }}">Practicar</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Preguntas más falladas</div>
+      {% if ranking %}
+      <ul class="list-group list-group-flush small">
+        {% for p, e in ranking %}
+        <li class="list-group-item d-flex justify-content-between gap-2">
+          <span><strong>{{ p.codigo }}</strong> · {{ p.tema }}</span>
+          <span class="text-nowrap"><span class="badge text-bg-danger">{{ e.fallos }}</span>
+            {% if e.fallada %}<span class="badge text-bg-warning">fallada ahora</span>{% else %}<span class="badge text-bg-success">ya acertada</span>{% endif %}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}<div class="card-body small text-muted">Sin fallos registrados.</div>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1682 @@
+[
+  {
+    "id": "N1-F01",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "Patrón MVC",
+    "enunciado": "¿Para qué se utiliza principalmente el patrón de arquitectura MVC?",
+    "opciones": [
+      "Optimizar la memoria de la aplicación",
+      "Separar la lógica de negocio, la presentación y el control",
+      "Evitar el uso de bases de datos",
+      "Reemplazar el uso de frameworks"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-F02",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "CRUD y persistencia",
+    "enunciado": "¿A qué se refiere el concepto de persistencia de datos?",
+    "opciones": [
+      "Guardar datos solo en memoria RAM",
+      "Almacenar datos de forma temporal",
+      "Mantener datos disponibles de forma duradera en una base de datos",
+      "Eliminar información automáticamente"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-F03",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "Patrón MVC",
+    "enunciado": "En la arquitectura MVC, ¿qué elemento administra la información y la lógica del sistema?",
+    "opciones": [
+      "Controlador",
+      "Vista",
+      "Modelo",
+      "Servicio"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-F04",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "Patrón MVC",
+    "enunciado": "En el modelo MVC, ¿qué parte se encarga de presentar los datos al usuario?",
+    "opciones": [
+      "Modelo",
+      "Controlador",
+      "Vista",
+      "Repositorio"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-F05",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "Anotaciones de Spring Boot",
+    "enunciado": "¿Qué anotación de Spring Boot se emplea para definir un controlador web?",
+    "opciones": [
+      "@Service",
+      "@Entity",
+      "@Controller",
+      "@Repository"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-F06",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "Anotaciones de Spring Boot",
+    "enunciado": "¿Para qué se usa la anotación @Entity dentro de Spring Boot?",
+    "opciones": [
+      "Definir una clase como entidad de base de datos",
+      "Indicar un servicio de negocio",
+      "Definir un repositorio",
+      "Crear un controlador"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N1-F07",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "CRUD y persistencia",
+    "enunciado": "En el contexto de bases de datos, ¿qué representan las siglas CRUD?",
+    "opciones": [
+      "Create, Read, Update, Delete",
+      "Connect, Run, Use, Deploy",
+      "Control, Register, Update, Define",
+      "Class, Rule, User, Data"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N1-F08",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "Modelo entidad-relación",
+    "enunciado": "¿Qué describe una relación de tipo Uno a Muchos (1:N) en una base de datos?",
+    "opciones": [
+      "Una entidad A está vinculada con exactamente una entidad B",
+      "Una entidad A puede tener varias entidades B",
+      "Una entidad A está vinculada con muchas entidades A",
+      "Ninguna de las anteriores"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-F09",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "Gestión de dependencias (Maven/Gradle)",
+    "enunciado": "¿Qué herramienta permite gestionar las dependencias en un proyecto Spring Boot?",
+    "opciones": [
+      "Gradle/Maven",
+      "MySQL Workbench",
+      "IntelliJ",
+      "Hibernate"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N1-F10",
+    "nucleo": 1,
+    "nivel": "facil",
+    "tema": "Anotaciones de Spring Boot",
+    "enunciado": "¿Qué función cumple la anotación @Service dentro de Spring Boot?",
+    "opciones": [
+      "Marcar una clase como entidad de base de datos",
+      "Indicar que contiene lógica de negocio",
+      "Identificar una interfaz de repositorio",
+      "Definir la vista de la aplicación"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-M01",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Anotaciones de Spring Boot",
+    "enunciado": "¿Qué anotación en Spring Boot se utiliza para crear controladores que retornan datos en formato JSON o XML?",
+    "opciones": [
+      "@Repository",
+      "@Entity",
+      "@RestController",
+      "@Service"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-M02",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Normalización",
+    "enunciado": "¿Cuál es el objetivo de aplicar la normalización en una base de datos?",
+    "opciones": [
+      "Aumentar redundancia",
+      "Reducir redundancia y mejorar integridad",
+      "Evitar relaciones entre tablas",
+      "Disminuir seguridad"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-M03",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Spring Data JPA",
+    "enunciado": "¿Cuál es el beneficio más importante de utilizar Spring Data JPA?",
+    "opciones": [
+      "Reemplaza la base de datos relacional",
+      "Automatiza la creación de repositorios y consultas",
+      "Elimina la necesidad de entidades",
+      "Funciona solo con bases de datos NoSQL"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-M04",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Spring Data JPA",
+    "enunciado": "¿Qué lenguaje se emplea para realizar consultas dentro de JPA?",
+    "opciones": [
+      "SQL",
+      "HQL",
+      "JPQL",
+      "PQL"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-M05",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Anotaciones de Spring Boot",
+    "enunciado": "¿En qué se diferencian principalmente @Controller y @RestController en Spring?",
+    "opciones": [
+      "No hay ninguna diferencia",
+      "@Controller retorna vistas, mientras que @RestController retorna datos JSON o XML",
+      "@RestController es solo para seguridad",
+      "@Controller solo funciona en bases de datos"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-M06",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Spring Data JPA",
+    "enunciado": "En Spring Data JPA, ¿qué interfaz se utiliza para que un repositorio disponga de operaciones CRUD básicas?",
+    "opciones": [
+      "CrudRepository",
+      "JpaRepository",
+      "PagingRepository",
+      "DataRepository"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-M07",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Modelo entidad-relación",
+    "enunciado": "¿Qué tipo de relación requiere una tabla intermedia para implementarse en una base de datos?",
+    "opciones": [
+      "Uno a Uno",
+      "Uno a Muchos",
+      "Muchos a Muchos",
+      "Ninguna"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-M08",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Patrón MVC",
+    "enunciado": "En la arquitectura MVC, ¿qué acción realiza el controlador al recibir una petición HTTP?",
+    "opciones": [
+      "Devuelve directamente la vista",
+      "Consulta al modelo y decide qué vista mostrar",
+      "Guarda los datos en la base de datos sin procesarlos",
+      "Genera automáticamente un servicio"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-M09",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Patrón MVC",
+    "enunciado": "¿Qué beneficio aporta la división de responsabilidades en el patrón MVC?",
+    "opciones": [
+      "Hace más rápido el acceso a datos",
+      "Permite modificar una parte sin afectar las demás",
+      "Reduce el uso de memoria",
+      "Elimina la necesidad de controladores"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-M10",
+    "nucleo": 1,
+    "nivel": "medio",
+    "tema": "Carga de datos en JPA (LAZY/EAGER, N+1)",
+    "enunciado": "En JPA, ¿en qué se distinguen FetchType.LAZY y FetchType.EAGER?",
+    "opciones": [
+      "LAZY carga datos inmediatamente y EAGER bajo demanda",
+      "EAGER y LAZY funcionan de la misma manera",
+      "LAZY carga datos bajo demanda y EAGER los carga de inmediato",
+      "Ninguna de las anteriores"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-D01",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Manejo global de excepciones",
+    "enunciado": "¿De qué manera se pueden manejar excepciones de forma global en Spring Boot?",
+    "opciones": [
+      "Usando @ControllerAdvice",
+      "Con @Entity",
+      "Creando un repositorio",
+      "Usando FetchType.LAZY"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N1-D02",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Spring Security",
+    "enunciado": "¿Qué asegura el manejo de sesiones dentro de Spring Security?",
+    "opciones": [
+      "Que un usuario no pueda abrir múltiples sesiones simultáneamente",
+      "Que se eliminen automáticamente las tablas",
+      "Que se reduzca el tiempo de compilación",
+      "Que se desactiven los controladores"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N1-D03",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Claves primarias en JPA",
+    "enunciado": "¿Qué método de generación de claves primarias corresponde a GenerationType.IDENTITY en JPA?",
+    "opciones": [
+      "Secuencias de base de datos",
+      "UUID",
+      "Autoincremento en la base de datos",
+      "Valores aleatorios"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-D04",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Spring Data JPA",
+    "enunciado": "¿Qué posibilidad ofrece utilizar repositorios personalizados en Spring Data JPA?",
+    "opciones": [
+      "Definir consultas complejas sin depender de JPQL",
+      "Evitar la seguridad de datos",
+      "Eliminar la lógica de negocio",
+      "Reducir entidades"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N1-D05",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Carga de datos en JPA (LAZY/EAGER, N+1)",
+    "enunciado": "¿Qué técnica se utiliza en JPA para evitar el problema conocido como N+1 queries?",
+    "opciones": [
+      "Deshabilitar la paginación",
+      "Usar consultas nativas",
+      "Usar fetch join o @EntityGraph",
+      "Hacer la relación unidireccional"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-D06",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Inyección de dependencias",
+    "enunciado": "¿Qué ventaja principal aporta la inyección de dependencias (DI) en Spring?",
+    "opciones": [
+      "Reducir el acoplamiento entre clases",
+      "Mejorar el diseño de vistas",
+      "Reemplazar la base de datos",
+      "Hacer consultas SQL más rápidas"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N1-D07",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Patrón MVC",
+    "enunciado": "En el proceso de una solicitud dentro de MVC, ¿cuál es el orden correcto del flujo?",
+    "opciones": [
+      "Vista → Controlador → Modelo → Usuario",
+      "Usuario → Vista → Controlador → Modelo",
+      "Usuario → Controlador → Modelo → Vista → Usuario",
+      "Modelo → Controlador → Vista → Usuario"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N1-D08",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Spring Data JPA",
+    "enunciado": "¿Qué funcionalidad de Spring Data JPA permite generar consultas basándose en el nombre del método?",
+    "opciones": [
+      "Query by Name",
+      "Derived Queries",
+      "JPQL Statements",
+      "Native SQL"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-D09",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Spring Actuator",
+    "enunciado": "¿Qué tipo de funcionalidades ofrece Spring Actuator dentro de una aplicación Spring Boot?",
+    "opciones": [
+      "Mejor seguridad",
+      "Métricas y monitoreo",
+      "Optimización de SQL",
+      "Reducción de memoria"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N1-D10",
+    "nucleo": 1,
+    "nivel": "dificil",
+    "tema": "Patrón MVC",
+    "enunciado": "¿Qué componente en Spring Boot se encarga de contener la lógica de negocio de la aplicación?",
+    "opciones": [
+      "Servicio",
+      "Controlador",
+      "Repositorio",
+      "Vista"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-F01",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Modelo relacional",
+    "enunciado": "¿Qué propiedad de una base de datos permite cambiar su estructura física sin alterar el esquema lógico?",
+    "opciones": [
+      "Independencia lógica",
+      "Independencia física",
+      "Reducción de redundancia",
+      "Seguridad"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-F02",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Modelo relacional",
+    "enunciado": "¿Qué tipo de relación representa el caso en el que un departamento puede tener varios empleados, pero cada empleado pertenece únicamente a un departamento?",
+    "opciones": [
+      "Uno a uno (1:1)",
+      "Uno a muchos (1:N)",
+      "Muchos a uno (N:1)",
+      "Muchos a muchos (N:N)"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-F03",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Integridad de datos",
+    "enunciado": "¿Qué tipo de integridad garantiza que cada registro de una tabla posea una clave primaria única?",
+    "opciones": [
+      "Integridad de dominio",
+      "Integridad de entidad",
+      "Integridad referencial",
+      "Integridad definida por el usuario"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-F04",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Consultas SQL y JOINs",
+    "enunciado": "¿Qué tipo de JOIN devuelve únicamente los registros que coinciden en ambas tablas?",
+    "opciones": [
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "INNER JOIN",
+      "FULL JOIN"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N2-F05",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Modelo relacional",
+    "enunciado": "En el modelo relacional, ¿a qué se refiere el término \"tupla\"?",
+    "opciones": [
+      "Una columna de una tabla",
+      "Un conjunto de registros en una tabla",
+      "Una fila en una tabla",
+      "Una relación entre dos tablas"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N2-F06",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Integridad de datos",
+    "enunciado": "¿Qué tipo de integridad controla que los valores de una columna sean válidos según su tipo de dato o dominio permitido?",
+    "opciones": [
+      "Integridad de entidad",
+      "Integridad de dominio",
+      "Integridad referencial",
+      "Integridad definida por el usuario"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-F07",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Sublenguajes SQL (DDL/DML/DCL)",
+    "enunciado": "¿Cuáles de las siguientes instrucciones pertenecen al lenguaje DDL (Data Definition Language) de SQL?",
+    "opciones": [
+      "CREATE, SELECT, UPDATE, DELETE",
+      "CREATE, ALTER, DROP, TRUNCATE",
+      "INSERT, UPDATE, DELETE, SELECT",
+      "GRANT, REVOKE, COMMIT, ROLLBACK"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-F08",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Normalización",
+    "enunciado": "¿Cuál es el objetivo principal de aplicar normalización durante el diseño lógico de una base de datos?",
+    "opciones": [
+      "Eliminar datos redundantes",
+      "Mejorar la seguridad de la base de datos",
+      "Optimizar la consulta de datos",
+      "Facilitar el almacenamiento físico de los datos"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-F09",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Normalización",
+    "enunciado": "¿Qué condición describe correctamente la Tercera Forma Normal (3NF) respecto a las dependencias funcionales en una base de datos relacional?",
+    "opciones": [
+      "Una tabla está en 3NF si está en 2NF y todos los atributos no clave dependen directamente de la clave primaria, sin depender de otras columnas no clave.",
+      "Una tabla está en 3NF si está en 1NF, no tiene dependencias transitivas y cada columna no clave depende funcionalmente de la clave primaria.",
+      "Una tabla está en 3NF si está en 2NF y no tiene dependencias parciales entre las columnas.",
+      "Una tabla está en 3NF si todos los atributos de la tabla son clave primaria o clave foránea."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-F10",
+    "nucleo": 2,
+    "nivel": "facil",
+    "tema": "Consultas SQL y JOINs",
+    "enunciado": "¿Cuál de las siguientes afirmaciones explica correctamente una subconsulta escalar?",
+    "opciones": [
+      "Se utiliza dentro de un JOIN para combinar tablas.",
+      "Devuelve múltiples columnas, usada con IN o EXISTS.",
+      "Devuelve un solo valor para comparar en la consulta externa.",
+      "Se usa dentro de funciones agregadas como COUNT o SUM."
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N2-M01",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Transacciones y ACID",
+    "enunciado": "¿Qué propiedad garantiza que las transacciones no queden en un estado intermedio?",
+    "opciones": [
+      "Consistencia.",
+      "Durabilidad.",
+      "Atomicidad.",
+      "Aislamiento."
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N2-M02",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Transacciones y ACID",
+    "enunciado": "Si un procedimiento almacenado realiza una operación de UPDATE sobre una tabla, ¿Qué mecanismo puede garantizar que la operación de actualización no interfiera con otras transacciones que estén ejecutándose simultáneamente en la misma tabla?",
+    "opciones": [
+      "Uso de índices para optimizar el rendimiento de las consultas.",
+      "Uso de la propiedad de aislamiento (Isolation) de las transacciones.",
+      "Uso de triggers para auditar los cambios.",
+      "Uso de vistas para limitar el acceso a los datos."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-M03",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Usuarios y privilegios en MySQL",
+    "enunciado": "En MySQL, ¿Qué comando permite cambiar la contraseña de un usuario sin necesidad de eliminar y volver a crear la cuenta de usuario?",
+    "opciones": [
+      "SET PASSWORD",
+      "UPDATE PASSWORD",
+      "ALTER USER",
+      "GRANT USER"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N2-M04",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Consultas SQL y JOINs",
+    "enunciado": "¿Qué datos me devuelve la siguiente consulta sql?\nSELECT concat(e.FirstName, \" \", e.LastName) as 'Empleado'\nFROM employees e\nINNER JOIN orders o\nON e.EmployeeID=o.EmployeeID\nJOIN customers c\nON o.CustomerID=c.CustomerID\nWHERE c.ContactName='Peter Franken' and o.OrderDate='1996-07-29';",
+    "opciones": [
+      "Nombre del empleado que atendió el pedido del cliente Peter Franken el día 29 de julio de 1996.",
+      "Número de empleados que han atendido al cliente Peter Franken desde la fecha 1996-07-29 hasta la fecha actual.",
+      "Nombre del empleado que envió un pedido en la fecha 1996-07-29.",
+      "Nombre del empleado que atendió el pedido del cliente Peter Franken, o el empleado que envió un pedido el día 29 de julio de 1996."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-M05",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Usuarios y privilegios en MySQL",
+    "enunciado": "¿Qué comando en MySQL se utiliza para otorgar privilegios a un usuario?",
+    "opciones": [
+      "CREATE",
+      "GRANT",
+      "GRANTS",
+      "REVOKE"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-M06",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Vistas",
+    "enunciado": "¿Qué clase de vista es más adecuada si se requiere proporcionar acceso a los usuarios de solo lectura a ciertos campos de una tabla sin permitirles realizar actualizaciones?",
+    "opciones": [
+      "Vista materializada que almacena los resultados de la consulta.",
+      "Vista de seguridad que solo devuelve un subconjunto de columnas y filas.",
+      "Vista de actualización para permitir modificaciones solo en campos específicos.",
+      "Vista indexada que mejora la velocidad de las consultas."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-M07",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Índices",
+    "enunciado": "¿Qué el efecto potencial de no utilizar índices en una base de datos que realiza consultas frecuentes sobre una tabla con millones de registros?",
+    "opciones": [
+      "Las consultas podrían volverse extremadamente lentas debido a las búsquedas secuenciales.",
+      "No afectaría significativamente el rendimiento, ya que MySQL puede optimizar las consultas internamente.",
+      "Los registros insertados se ordenarán automáticamente por el servidor, lo que mejora la consulta.",
+      "Las consultas que involucran múltiples tablas se verían menos lentas sin índices."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-M08",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Índices",
+    "enunciado": "¿Qué problema puede surgir si se crea un índice sobre todas las columnas de una tabla?",
+    "opciones": [
+      "El rendimiento de las consultas se mejora significativamente sin un impacto notable en las inserciones.",
+      "El índice puede consumir mucho espacio y hacer que las operaciones de inserción y actualización sean más lentas.",
+      "Los índices sobre todas las columnas permiten mejorar el rendimiento solo de las consultas JOIN.",
+      "No hay impacto en el rendimiento de las consultas ni en el espacio de almacenamiento."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-M09",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Usuarios y privilegios en MySQL",
+    "enunciado": "¿Qué riesgo implica otorgar privilegios de tipo GRANT OPTION a un usuario en una base de datos?",
+    "opciones": [
+      "El usuario puede otorgar privilegios a otros usuarios sin que el administrador lo sepa.",
+      "El usuario puede acceder a todas las tablas y vistas de la base de datos sin restricciones.",
+      "El usuario puede modificar las políticas de seguridad de la base de datos.",
+      "El usuario puede eliminar tablas sin intervención del administrador."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-M10",
+    "nucleo": 2,
+    "nivel": "medio",
+    "tema": "Triggers en MySQL",
+    "enunciado": "Dado el siguiente código para un trigger, ¿Qué hará si se actualiza el salario de un empleado en la tabla Empleados?\nCREATE TRIGGER Trg_UpdateSalario\nAFTER UPDATE ON Empleados\nFOR EACH ROW\nBEGIN\nIF OLD.Salario < NEW.Salario THEN\nINSERT INTO LogSalarios (EmpleadoID, SalarioAntiguo, SalarioNuevo, FechaCambio)\nVALUES (OLD.ID, OLD.Salario, NEW.Salario, NOW());\nEND IF;\nEND;",
+    "opciones": [
+      "Insertará un nuevo registro en LogSalarios solo si el nuevo salario es menor que el antiguo.",
+      "Insertará el salario en la tabla LogSalarios y luego revertirá la actualización.",
+      "Insertará un registro en LogSalarios solo si el nuevo salario es mayor que el antiguo.",
+      "El trigger no realizará ninguna acción, ya que no se cumplen las condiciones."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-D01",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "Usuarios y privilegios en MySQL",
+    "enunciado": "¿Qué combinación de sentencias SQL usarías para crear un usuario, otorgarle acceso a la base de datos, y luego quitarle privilegios específicos sin eliminar al usuario?",
+    "opciones": [
+      "CREATE USER, DROP USER, REVOKE",
+      "CREATE USER, GRANT, REVOKE",
+      "GRANT, REVOKE, COMMIT",
+      "CREATE USER, DROP USER, COMMIT"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-D02",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "MongoDB / NoSQL",
+    "enunciado": "En una base de datos NoSQL, ¿Cuál de los siguientes ejemplos representa correctamente la flexibilidad del esquema en bases de datos basadas en documentos?",
+    "opciones": [
+      "Cada documento debe seguir una estructura rígida, similar a una tabla relacional.",
+      "Un documento puede tener un conjunto de campos diferente a otro documento en la misma colección.",
+      "Todos los documentos deben estar formateados como columnas en lugar de filas.",
+      "La base de datos requiere que todas las colecciones tengan el mismo esquema."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-D03",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "Triggers en MySQL",
+    "enunciado": "¿Qué la función del siguiente trigger?\nCREATE TABLE prestamo(\nid int not null auto_increment,\nnombre varchar(20) not null,\nFechaPrestamo date not null,\nFechaDevolucion date,\nestado varchar(15),\nCONSTRAINT pk_prestamo primary key(id)\n)engine=InnoDB;\nDELIMITER $$\nCREATE TRIGGER control_prestamo\nBEFORE INSERT ON prestamo\nFOR EACH ROW\nBEGIN\nIF new.FechaDevolucion is null THEN SET new.estado = 'Pendiente';\nEND IF;\nEND $$",
+    "opciones": [
+      "Coloca ‘Pendiente’ en el campo estado de la tabla préstamo, cada vez que se ingrese un nuevo préstamo y la fecha de devolución sea nulo.",
+      "Coloca nulo en el campo estado de la tabla préstamo, cada vez que se actualice la fecha de devolución de un préstamo.",
+      "Coloca ‘Pendiente’ en el campo FechaDevolución de la tabla préstamo.",
+      "Coloca la fecha de préstamo y la fecha de devolución siempre y cuando el estado sea ‘Pendiente’"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-D04",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "Transacciones y ACID",
+    "enunciado": "Dado el siguiente script y tabla:\nSTART TRANSACTION;\nupdate autor set pais='Ecuador' where codigo='A100';\ninsert into autor(codigo, nombre, apellido, pais)\nvalues('Herman', 'Melville', 'USA');\n¿Qué cambios registrará la base de datos biblioteca?",
+    "opciones": [
+      "El script confirma la transacción – commit.",
+      "El script cancela la transacción – rollback.",
+      "El script solo actualiza el país del autor – update.",
+      "El script solo inserta un nuevo autor – insert."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-D05",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "Triggers en MySQL",
+    "enunciado": "Trigger que controla que la hora de inicio ingresada no sea posterior a la hora fin ingresada, caso contrario, solo se tomará en cuenta la mitad de la jornada(4 horas) como penalidad.",
+    "opciones": [
+      "DELIMITER $$\nCREATE TRIGGER control_hora\nBEFORE INSERT ON control_produccion\nFOR EACH ROW\nBEGIN\nIF new.horaInicio > new.horaFin THEN SET new.horaFin = new.horaInicio + time('4:00:00');\nEND IF;\nEND $$",
+      "DELIMITER $$\nCREATE TRIGGER control_hora\nBEFORE UPDATE ON control_produccion\nFOR EACH ROW\nBEGIN\nIF new.horaInicio > new.horaFin THEN SET new.horaFin = new.horaInicio + time('4:00:00');\nEND IF;\nEND $$",
+      "DELIMITER $$\nCREATE TRIGGER control_hora\nINSERT BEFORE ON control_produccion\nFOR EACH ROW\nBEGIN\nIF new.horaInicio > new.horaFin THEN SET new.horaFin = new.horaInicio + time('4:00:00');\nEND IF;\nEND $$",
+      "DELIMITER $$\nCREATE TRIGGER control_hora\nBEFORE DELETE ON control_produccion\nFOR EACH ROW\nBEGIN\nIF new.horaInicio > new.horaFin THEN SET new.horaFin = new.horaInicio + time('4:00:00');\nEND IF;\nEND $$"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-D06",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "MongoDB / NoSQL",
+    "enunciado": "¿Qué resultado se espera al usar $set en una operación de actualización en MongoDB?",
+    "opciones": [
+      "Reemplazar todo el documento por un nuevo documento.",
+      "Añadir o modificar un campo específico en el documento.",
+      "Borrar un campo de todos los documentos coincidentes.",
+      "Crear una nueva colección a partir de los documentos actualizados."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N2-D07",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "MongoDB / NoSQL",
+    "enunciado": "¿Qué efecto tiene la siguiente consulta en MongoDB?\ndb.ventas.aggregate([ { $group: { _id: \"$cliente\", total: { $sum: \"$monto\" } } }])",
+    "opciones": [
+      "Agrupará las ventas por cliente y sumará el total de cada venta.",
+      "Agrupará las ventas por productos y calculará el promedio del monto.",
+      "Creará un nuevo campo que contiene el mayor monto por cliente.",
+      "Ordenará las ventas por cliente y por monto de mayor a menor."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-D08",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "MongoDB / NoSQL",
+    "enunciado": "En una colección de pedidos. ¿Qué hará la siguiente consulta con $lookup?\ndb.pedidos.aggregate([\n{\n$lookup: {\nfrom: \"clientes\",\nlocalField: \"clienteId\",\nforeignField: \"_id\",\nas: \"detallesCliente\"\n}\n}\n])",
+    "opciones": [
+      "Unirá documentos de la colección pedidos con clientes donde los campos coincidan.",
+      "Filtrará los pedidos que no tengan un cliente asignado.",
+      "Copiará todos los documentos de clientes y pedidos.",
+      "Borrará los documentos duplicados entre ambas colecciones."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-D09",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "MongoDB / NoSQL",
+    "enunciado": "¿Qué resultado se obtendrá con esta operación de actualización en MongoDB?\ndb.empleados.updateMany(\n{ departamento: \"Ventas\" },\n{ $inc: { salario: 1000 } }\n)",
+    "opciones": [
+      "Aumentará el salario de todos los empleados en 1000 solo si están en el departamento de \"Ventas\".",
+      "Reemplazará el valor de salario por 1000 para los empleados del departamento de \"Ventas\".",
+      "Reducirá el salario de todos los empleados en 1000.",
+      "Ignorará la operación si el valor salario no existe en el documento."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N2-D10",
+    "nucleo": 2,
+    "nivel": "dificil",
+    "tema": "Procedimientos almacenados",
+    "enunciado": "Procedimiento almacenado que a partir del número de cédula de un alumno me muestre su nombre y apellido, en caso de no existir el número de cédula me muestre un mensaje que diga que el alumno no está matriculado.",
+    "opciones": [
+      "DELIMITER $$\ncreate procedure info_alumno(num_cedula varchar(10))\nBEGIN\nif(exists(select * from alumno where num_cedula=cedula))\nthen select nombre, apellido from alumno where num_cedula=cedula;\nelseif(not exists(select * from alumno where num_cedula=cedula))\nthen select 'El alumno no está matriculado' as 'Observación';\nend if;\nEND $$",
+      "DELIMITER $$\ncreate procedure info_alumno(nombre varchar(10))\nBEGIN\nif(exists(select * from alumno where num_cedula=cedula))\nthen select nombre, apellido from alumno where num_cedula=cedula;\nelseif(not exists(select * from alumno where num_cedula=cedula))\nthen select 'El alumno no está matriculado' as 'Observación';\nend if;\nEND $$",
+      "DELIMITER $$\ncreate procedure info_alumno(cedula varchar(10))\nBEGIN\nif(exists(select * from alumno where num_cedula=cedula))\nthen select nombre, apellido from alumno where num_cedula=cedula;\nelseif(not exists(select * from alumno where num_cedula=cedula))\nthen select 'El alumno no está matriculado' as 'Observación';\nend if;\nEND $$",
+      "DELIMITER $$\ncreate procedure info_alumno(num_cedula varchar(10))\nBEGIN\nif(exists(select * from alumno where cedula=cedula))\nthen select nombre, apellido from alumno where cedula=cedula;\nelseif(not exists(select * from alumno where cedula=cedula))\nthen select 'El alumno no está matriculado' as 'Observación';\nend if;\nEND $$"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-F01",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Firebase con Angular",
+    "enunciado": "¿Qué función de Firebase se utiliza para iniciar sesión con una cuenta de Google en una aplicación Angular?",
+    "opciones": [
+      "signInWithEmailAndPassword()",
+      "signInWithPopup()",
+      "signInWithGoogle()",
+      "signOut()"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-F02",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Componentes de Angular",
+    "enunciado": "En Angular, ¿qué enfoque se utiliza comúnmente para intercambiar información entre componentes que no tienen relación directa?",
+    "opciones": [
+      "Herencia de clases.",
+      "Servicios inyectables con singleton.",
+      "Decoradores @Input y @Output.",
+      "Uso directo de variables globales."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-F03",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Componentes de Angular",
+    "enunciado": "En Angular, ¿qué se entiende por un componente?",
+    "opciones": [
+      "Una función que maneja la lógica de negocio.",
+      "Una clase decorada con @Component que controla una parte de la interfaz de usuario.",
+      "Un archivo de configuración para rutas.",
+      "Un servicio para manejar datos."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-F04",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Enrutamiento en Angular",
+    "enunciado": "¿En qué archivo se definen los proveedores (providers) dentro de una aplicación Angular moderna?",
+    "opciones": [
+      "app.config.ts.",
+      "app.routes.ts.",
+      "app.providers.ts.",
+      "app.component.ts."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-F05",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Firestore / AngularFire",
+    "enunciado": "¿Qué función de Firestore permite crear un documento nuevo dentro de una colección generando automáticamente su identificador?",
+    "opciones": [
+      "setDoc()",
+      "addDoc()",
+      "updateDoc()",
+      "getDoc()"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-F06",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Directivas de Angular",
+    "enunciado": "¿Qué directiva estructural de Angular permite renderizar un elemento HTML únicamente cuando se cumple una condición?",
+    "opciones": [
+      "*ngIf o @if",
+      "*ngFor o @for",
+      "if{}",
+      "for{}"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-F07",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Formularios reactivos",
+    "enunciado": "Dentro de los formularios reactivos de Angular, ¿qué directiva permite agrupar los controles del formulario?",
+    "opciones": [
+      "ngForm",
+      "formGroup",
+      "ngModel",
+      "formControl"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-F08",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Bootstrap y CSS",
+    "enunciado": "Si una tarjeta (.card) tiene una transición aplicada a transform y box-shadow, ¿qué propiedad CSS permitiría aumentar su tamaño al 110% al pasar el cursor manteniendo la sombra?",
+    "opciones": [
+      "transform: scale(1.1);",
+      "transition: transform 0.5s;",
+      "box-shadow: 0 8px 25px rgba(2, 56, 250, 0.3);",
+      "cursor: zoom-in;"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-F09",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Data binding en Angular",
+    "enunciado": "¿Cómo se declara un evento dentro de una plantilla HTML en Angular?",
+    "opciones": [
+      "(click)",
+      "[click]",
+      "{{click}}",
+      "onClick"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-F10",
+    "nucleo": 3,
+    "nivel": "facil",
+    "tema": "Servicios e inyección en Angular",
+    "enunciado": "¿Para qué se utilizan principalmente los servicios dentro de Angular?",
+    "opciones": [
+      "Definir estilos CSS para los componentes.",
+      "Gestionar la lógica de negocio y compartir datos entre componentes.",
+      "Crear plantillas HTML.",
+      "Configurar las dependencias del proyecto."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-M01",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Guards de Angular",
+    "enunciado": "Dentro del sistema de enrutamiento de Angular, ¿qué función cumple el componente RouterOutlet?",
+    "opciones": [
+      "Definir rutas en la aplicación.",
+      "Mostrar los componentes asociados a las rutas.",
+      "Gestionar la navegación programática.",
+      "Configurar guards de rutas."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-M02",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Guards de Angular",
+    "enunciado": "¿Qué guard de Angular se ejecuta antes de entrar a una ruta con el fin de validar si el usuario tiene permisos?",
+    "opciones": [
+      "CanDeactivate",
+      "CanActivate",
+      "CanLoad",
+      "Resolve"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-M03",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Guards de Angular",
+    "enunciado": "¿Qué interfaz del router de Angular se implementa para impedir que el usuario abandone una vista cuando existen cambios no guardados?",
+    "opciones": [
+      "CanActivate",
+      "CanDeactivate",
+      "CanLoad",
+      "Resolve"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-M04",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Guards de Angular",
+    "enunciado": "¿Qué tipo de guard en Angular permite impedir que el usuario abandone una vista si existen cambios sin guardar?",
+    "opciones": [
+      "CanActivate",
+      "CanDeactivate",
+      "CanLoad",
+      "CanMatch"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-M05",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Formularios reactivos",
+    "enunciado": "Para poder trabajar con formularios reactivos en Angular, ¿dónde se debe incluir el ReactiveFormsModule?",
+    "opciones": [
+      "En imports dentro del decorador",
+      "En el constructor",
+      "Importando dentro del componente con import",
+      "Inyectando"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-M06",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Servicios e inyección en Angular",
+    "enunciado": "En Angular, ¿en qué lugar se realiza normalmente la inyección de servicios dentro de un componente?",
+    "opciones": [
+      "En los componentes",
+      "En el decorador de los componentes",
+      "En el constructor del componente",
+      "Solo se puede inyectar con inject"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N3-M07",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Componentes de Angular",
+    "enunciado": "¿De qué manera se inyectan dependencias como ActivatedRoute dentro de un componente de Angular?",
+    "opciones": [
+      "@Input()",
+      "@Injectable()",
+      "@Inject()",
+      "Constructor (sin decorador explícito)"
+    ],
+    "correcta": 3
+  },
+  {
+    "id": "N3-M08",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Firestore / AngularFire",
+    "enunciado": "En AngularFire, ¿qué método permite obtener los datos de una colección de Firestore con actualizaciones en tiempo real?",
+    "opciones": [
+      "getDocs()",
+      "collectionData()",
+      "docData()",
+      "snapshotChanges()"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-M09",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "Enrutamiento en Angular",
+    "enunciado": "Cuando se desea cambiar de ruta mediante código en Angular, ¿qué método se utiliza?",
+    "opciones": [
+      "navigateTo()",
+      "goToRoute()",
+      "navigate()",
+      "redirect()"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N3-M10",
+    "nucleo": 3,
+    "nivel": "medio",
+    "tema": "RxJS y Observables",
+    "enunciado": "¿Qué método se utiliza para recibir los valores emitidos por un Observable en Angular o RxJS?",
+    "opciones": [
+      "subscribe()",
+      "pipe()",
+      "unsubscribe()",
+      "then(), catch()"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-D01",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Firestore / AngularFire",
+    "enunciado": "¿Qué función de Firestore permite recuperar los datos de un documento específico?",
+    "opciones": [
+      "collectionData()",
+      "docData()",
+      "getDocs()",
+      "addDoc()"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-D02",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Firestore / AngularFire",
+    "enunciado": "En Firestore, ¿qué método permite recuperar la información de un documento específico utilizando su identificador?",
+    "opciones": [
+      "getDocs()",
+      "collectionData()",
+      "docData()",
+      "queryDoc()"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N3-D03",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Servicios e inyección en Angular",
+    "enunciado": "¿Qué patrón de diseño suelen seguir los servicios en Angular para garantizar una única instancia compartida?",
+    "opciones": [
+      "Singleton",
+      "Factory",
+      "Observer",
+      "Decorator"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-D04",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Firebase con Angular",
+    "enunciado": "En AngularFire, ¿qué función se utiliza para redirigir automáticamente a otra ruta cuando un usuario no está autenticado?",
+    "opciones": [
+      "redirectUnauthorizedTo()",
+      "redirectTo()",
+      "navigate()",
+      "goTo()"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-D05",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Data binding en Angular",
+    "enunciado": "En las plantillas de Angular, ¿qué tipo de enlace se define utilizando paréntesis?",
+    "opciones": [
+      "Property binding",
+      "Event binding",
+      "Two-way binding",
+      "String interpolation"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-D06",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Enrutamiento en Angular",
+    "enunciado": "¿En qué archivo de un proyecto Angular se suelen declarar las rutas de la aplicación?",
+    "opciones": [
+      "app.routes.ts",
+      "app.config.ts",
+      "app.module.ts",
+      "app.route-service.ts"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N3-D07",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Bootstrap y CSS",
+    "enunciado": "En Bootstrap, ¿qué efecto produce aplicar las clases d-flex flex-column a un contenedor?",
+    "opciones": [
+      "Alinea los elementos hijos en una fila horizontal con espacio entre ellos.",
+      "Organiza los elementos hijos en una columna vertical, uno debajo del otro.",
+      "Centra los elementos hijos tanto horizontal como verticalmente.",
+      "Aplica un diseño en cuadrícula (grid) con espaciado automático."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-D08",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Firebase con Angular",
+    "enunciado": "En aplicaciones desarrolladas con Angular, ¿qué representa Firebase?",
+    "opciones": [
+      "Un framework para crear componentes.",
+      "Una plataforma de desarrollo de aplicaciones móviles.",
+      "Un servicio de backend que proporciona autenticación, base de datos y almacenamiento.",
+      "Una librería para manejar formularios."
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N3-D09",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Formularios reactivos",
+    "enunciado": "En los formularios reactivos de Angular, ¿para qué se utiliza principalmente la clase FormBuilder?",
+    "opciones": [
+      "Validar campos automáticamente.",
+      "Crear instancias de FormGroup y FormControl de manera declarativa.",
+      "Manejar el envío de datos a un backend.",
+      "Generar plantillas HTML para formularios."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N3-D10",
+    "nucleo": 3,
+    "nivel": "dificil",
+    "tema": "Firestore / AngularFire",
+    "enunciado": "En Firestore, ¿qué método permite comprobar si un documento ya existe antes de intentar crearlo?",
+    "opciones": [
+      "exists()",
+      "getDoc()",
+      "snapshot()",
+      "checkDoc()"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N4-F01",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Componentes móviles (props y estado)",
+    "enunciado": "¿Qué es un componente en React Native o Flutter?",
+    "opciones": [
+      "Una unidad independiente y reutilizable de la interfaz de usuario",
+      "Una función matemática para cálculos",
+      "Un tipo de base de datos en la nube",
+      "Un protocolo de comunicación HTTP"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N4-F02",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Componentes móviles (props y estado)",
+    "enunciado": "¿Qué significa el término \"props\" en el desarrollo de componentes?",
+    "opciones": [
+      "Propiedades que se pasan a los componentes para definir su comportamiento",
+      "Protocolos de seguridad para APIs",
+      "Procesos de optimización de imágenes",
+      "Parámetros de configuración del servidor"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N4-F03",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Consumo de APIs REST",
+    "enunciado": "¿Qué protocolo se utiliza comúnmente para la transferencia de datos entre cliente y servidor en APIs?",
+    "opciones": [
+      "FTP",
+      "SMTP",
+      "HTTP",
+      "SSH"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N4-F04",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Consumo de APIs REST",
+    "enunciado": "¿Qué formato de datos utilizan generalmente las respuestas de las APIs?",
+    "opciones": [
+      "XML exclusivamente",
+      "JSON",
+      "CSV",
+      "HTML"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-F05",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Firebase offline y tiempo real",
+    "enunciado": "¿Qué servicio de Firebase permite almacenar y sincronizar datos de manera instantánea entre clientes conectados?",
+    "opciones": [
+      "Firebase Authentication",
+      "Firebase Cloud Storage",
+      "Firebase Realtime Database",
+      "Firebase Analytics"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N4-F06",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Consumo de APIs REST",
+    "enunciado": "¿Qué método HTTP se utiliza para solicitar datos desde un servidor?",
+    "opciones": [
+      "POST",
+      "DELETE",
+      "PUT",
+      "GET"
+    ],
+    "correcta": 3
+  },
+  {
+    "id": "N4-F07",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Firebase Authentication",
+    "enunciado": "¿Qué es Firebase Authentication?",
+    "opciones": [
+      "Un servicio para almacenar archivos multimedia",
+      "Una plataforma para gestionar el inicio de sesión de usuarios de manera segura",
+      "Una herramienta para diseñar interfaces gráficas",
+      "Un sistema de análisis de datos en tiempo real"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-F08",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Componentes móviles (props y estado)",
+    "enunciado": "¿Qué tipo de componente se encarga únicamente de la visualización sin gestionar estado?",
+    "opciones": [
+      "Componente contenedor",
+      "Componente de presentación",
+      "Componente de clase",
+      "Componente de navegación"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-F09",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Flutter y Dart",
+    "enunciado": "¿Qué lenguaje se utiliza para crear componentes en Flutter?",
+    "opciones": [
+      "JavaScript",
+      "Python",
+      "Dart",
+      "Java"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N4-F10",
+    "nucleo": 4,
+    "nivel": "facil",
+    "tema": "Consumo de APIs REST",
+    "enunciado": "¿Qué método HTTP se utiliza para enviar nuevos datos a un servidor?",
+    "opciones": [
+      "GET",
+      "DELETE",
+      "POST",
+      "PATCH"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": "N4-M01",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Componentes móviles (props y estado)",
+    "enunciado": "¿Cuál es la principal diferencia entre componentes de presentación y componentes contenedores?",
+    "opciones": [
+      "Los de presentación usan CSS y los contenedores usan SASS",
+      "Los de presentación solo muestran información mediante props, mientras que los contenedores gestionan estado y lógica",
+      "Los de presentación son más rápidos que los contenedores",
+      "Los contenedores no pueden recibir props"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-M02",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Consumo de APIs REST",
+    "enunciado": "Al consumir una API externa en una aplicación móvil, ¿qué paso debe realizarse PRIMERO antes de procesar la respuesta?",
+    "opciones": [
+      "Mostrar los datos en la interfaz de usuario",
+      "Verificar que la respuesta de la API sea exitosa",
+      "Almacenar los datos en Firebase",
+      "Cerrar la conexión HTTP"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-M03",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Firebase offline y tiempo real",
+    "enunciado": "¿Qué característica distingue a Firebase Firestore de Firebase Realtime Database?",
+    "opciones": [
+      "Firestore solo funciona offline",
+      "Firestore ofrece una estructura de datos más flexible basada en colecciones y documentos con consultas más avanzadas",
+      "Firestore no soporta sincronización en tiempo real",
+      "Firestore es exclusivo para aplicaciones web"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-M04",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Firebase Authentication",
+    "enunciado": "En el contexto de autenticación con Firebase, ¿qué información se requiere mínimamente para registrar un usuario con correo y contraseña?",
+    "opciones": [
+      "Nombre completo, teléfono y dirección",
+      "Correo electrónico y contraseña",
+      "Foto de perfil y fecha de nacimiento",
+      "Token de dispositivo y ubicación GPS"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-M05",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Componentes móviles (props y estado)",
+    "enunciado": "¿Por qué es importante modularizar los componentes en React Native o Flutter?",
+    "opciones": [
+      "Para aumentar el tamaño del archivo de la aplicación",
+      "Para facilitar la reutilización, el mantenimiento y la organización del código",
+      "Para obligar al uso de TypeScript",
+      "Para eliminar la necesidad de usar estado"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-M06",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Firebase offline y tiempo real",
+    "enunciado": "¿Qué ventaja ofrece la sincronización en tiempo real de Firebase para una aplicación de chat?",
+    "opciones": [
+      "Los mensajes se almacenan únicamente en el dispositivo local",
+      "Los cambios en la base de datos se reflejan inmediatamente en todas las aplicaciones conectadas",
+      "Elimina la necesidad de autenticación de usuarios",
+      "Reduce el consumo de batería del dispositivo"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-M07",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Consumo de APIs REST",
+    "enunciado": "Al trabajar con APIs RESTful, ¿qué representa cada recurso en la arquitectura?",
+    "opciones": [
+      "Un archivo CSS que define estilos",
+      "Una URL única que permite acceder a datos específicos mediante métodos HTTP",
+      "Un componente gráfico de la interfaz de usuario",
+      "Una función de autenticación del servidor"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-M08",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Hooks y manejo de estado",
+    "enunciado": "¿Qué rol cumplen los Hooks en React Native respecto al manejo del estado?",
+    "opciones": [
+      "Permiten comprender y cambiar los estados en componentes funcionales",
+      "Reemplazan completamente la necesidad de Firebase",
+      "Convierten automáticamente las aplicaciones en nativas",
+      "Optimizan el consumo de datos móviles"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": "N4-M09",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Seguridad en Firebase",
+    "enunciado": "En Firebase, ¿qué propósito tienen las reglas de seguridad en la base de datos?",
+    "opciones": [
+      "Definir el diseño visual de la aplicación",
+      "Controlar qué usuarios autenticados pueden leer o escribir datos específicos",
+      "Compilar el código de la aplicación móvil",
+      "Generar automáticamente APIs REST"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-M10",
+    "nucleo": 4,
+    "nivel": "medio",
+    "tema": "Consumo de APIs REST",
+    "enunciado": "¿Qué se debe considerar al mostrar datos obtenidos de una API en la interfaz de usuario?",
+    "opciones": [
+      "Ignorar los errores de conexión para mejorar la experiencia",
+      "Implementar indicadores de carga y manejo de errores para una mejor experiencia de usuario",
+      "Mostrar siempre todos los campos de la respuesta JSON sin filtrar",
+      "Almacenar los datos en el dispositivo antes de mostrarlos"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D01",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Seguridad en Firebase",
+    "enunciado": "En una aplicación que integra Firebase Authentication y Realtime Database, ¿cómo se garantiza que un usuario solo pueda acceder a sus propios datos?",
+    "opciones": [
+      "Almacenando todos los datos en variables globales",
+      "Configurando reglas de seguridad que validen request.auth.uid == userId en la ruta de los documentos",
+      "Usando contraseñas diferentes para cada colección de datos",
+      "Desactivando la autenticación para usuarios nuevos"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D02",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Consumo de APIs REST",
+    "enunciado": "Al consumir una API externa como OpenWeather en una aplicación móvil con Firebase, ¿cuál es la arquitectura más eficiente para manejar los datos del clima de múltiples destinos?",
+    "opciones": [
+      "Consultar la API cada vez que el usuario abra la aplicación, sin almacenamiento local",
+      "Consultar la API, almacenar los resultados en Firebase y sincronizarlos en tiempo real para evitar consultas repetitivas innecesarias",
+      "Guardar todos los datos del clima en el almacenamiento local del dispositivo exclusivamente",
+      "Usar Firebase Functions para bloquear el acceso a la API externa"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D03",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Rendimiento en apps móviles",
+    "enunciado": "¿Qué estrategia de diseño de componentes permite que una lista de destinos de viaje sea eficiente en rendimiento cuando contiene cientos de elementos en React Native?",
+    "opciones": [
+      "Renderizar todos los elementos simultáneamente en un ScrollView",
+      "Utilizar FlatList con renderizado perezoso (lazy loading) y keys únicas para cada elemento",
+      "Dividir la lista en múltiples pantallas estáticas",
+      "Cargar todos los datos en memoria antes de mostrar cualquier elemento"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D04",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Firebase offline y tiempo real",
+    "enunciado": "En el contexto de sincronización offline de Firebase, ¿qué ocurre cuando un usuario modifica sus destinos sin conexión a internet y luego recupera la conectividad?",
+    "opciones": [
+      "Los cambios se pierden permanentemente",
+      "Firebase almacena localmente los cambios y los sincroniza automáticamente con el servidor al restablecerse la conexión",
+      "La aplicación requiere reinicio manual para aplicar los cambios",
+      "Los datos offline sobrescriben siempre los datos del servidor sin validación"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D05",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Seguridad en Firebase",
+    "enunciado": "Al implementar autenticación con Firebase en una aplicación profesional, ¿por qué es insuficiente depender únicamente de la validación del lado del cliente?",
+    "opciones": [
+      "Porque el lado del cliente es más lento que el servidor",
+      "Porque un usuario malintencionado podría manipular el código cliente para bypassar validaciones; la seguridad crítica debe estar en reglas del servidor/Firebase",
+      "Porque Firebase no permite validaciones en el cliente",
+      "Porque las contraseñas no se pueden verificar en el dispositivo"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D06",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Firebase offline y tiempo real",
+    "enunciado": "¿Qué consideración de arquitectura es crítica al integrar múltiples servicios de Firebase (Authentication, Firestore, Cloud Functions) en una sola aplicación móvil?",
+    "opciones": [
+      "Usar el mismo nombre de variable para todas las instancias de Firebase",
+      "Gestionar adecuadamente el ciclo de vida de las suscripciones en tiempo real para evitar fugas de memoria y costos innecesarios",
+      "Desactivar todos los servicios excepto uno para simplificar el código",
+      "Almacenar todas las credenciales en el código fuente de la aplicación"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D07",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Rendimiento en apps móviles",
+    "enunciado": "En una aplicación que consume APIs con paginación y muestra datos en una lista, ¿cómo se debe manejar la carga de más elementos al hacer scroll hacia abajo?",
+    "opciones": [
+      "Recargar toda la lista desde el inicio en cada interacción",
+      "Implementar un mecanismo de paginación que solicite el siguiente lote de datos solo cuando el usuario esté cerca del final de la lista actual",
+      "Mostrar un mensaje de error al llegar al final de la lista",
+      "Limitar la lista a 10 elementos sin opción de cargar más"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D08",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Hooks y manejo de estado",
+    "enunciado": "¿Qué ventaja estratégica ofrece usar componentes funcionales con Hooks en lugar de componentes de clase en React Native para una aplicación que requiere actualizaciones frecuentes de estado?",
+    "opciones": [
+      "Los componentes de clase son más compatibles con Firebase",
+      "Los componentes funcionales con Hooks permiten una gestión de estado más limpia, reutilizable y con menos código boilerplate",
+      "Los componentes de clase no pueden usar props",
+      "Los Hooks eliminan la necesidad de usar JavaScript"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D09",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Modelado de datos en Firebase",
+    "enunciado": "Al diseñar la estructura de datos en Firestore para una aplicación de planificación de viajes con múltiples usuarios, ¿cuál es la organización más escalable?",
+    "opciones": [
+      "Una única colección \"viajes\" con todos los destinos de todos los usuarios mezclados",
+      "Colección \"users\" con subcolección \"destinos\" por cada userId, permitiendo reglas de seguridad granulares y consultas eficientes por usuario",
+      "Almacenar todos los datos en documentos individuales sin colecciones",
+      "Usar Realtime Database exclusivamente porque Firestore no soporta usuarios múltiples"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": "N4-D10",
+    "nucleo": 4,
+    "nivel": "dificil",
+    "tema": "Firebase offline y tiempo real",
+    "enunciado": "En un escenario donde una aplicación móvil debe funcionar con baja conectividad y sincronizar datos con Firebase, ¿qué patrón de diseño es más apropiado para garantizar consistencia de datos?",
+    "opciones": [
+      "Ignorar las operaciones offline y requerir conexión constante",
+      "Implementar un patrón de \"optimistic UI\" con cola de operaciones pendientes que se sincronicen al recuperar conexión, manejando conflictos con estrategias definidas",
+      "Deshabilitar todas las funciones de escritura cuando no hay internet",
+      "Sincronizar solo los datos de lectura, nunca los de escritura"
+    ],
+    "correcta": 1
+  }
+]

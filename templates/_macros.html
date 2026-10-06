@@ -1,0 +1,38 @@
+{# Macros reutilizables de formularios e indicadores #}
+
+{% macro campo(field, placeholder="", ayuda="", tipo_extra={}) %}
+  <div class="mb-3">
+    {{ field.label(class="form-label") }}
+    {% set clase = "form-control" + (" is-invalid" if field.errors else "") %}
+    {{ field(class=clase, placeholder=placeholder, **tipo_extra) }}
+    {% if ayuda %}<div class="form-text">{{ ayuda }}</div>{% endif %}
+    {% for error in field.errors %}
+      <div class="invalid-feedback d-block">{{ error }}</div>
+    {% endfor %}
+  </div>
+{% endmacro %}
+
+{% macro nota_badge(nota, nota_minima) %}
+  {% if nota is none %}
+    <span class="badge text-bg-secondary">—</span>
+  {% elif nota >= nota_minima %}
+    <span class="badge text-bg-success">{{ "%.2f"|format(nota) }}</span>
+  {% elif nota >= 5 %}
+    <span class="badge text-bg-warning">{{ "%.2f"|format(nota) }}</span>
+  {% else %}
+    <span class="badge text-bg-danger">{{ "%.2f"|format(nota) }}</span>
+  {% endif %}
+{% endmacro %}
+
+{% macro barra(pct, color="primary", alto=18, etiqueta=true) %}
+  <div class="progress" role="progressbar" style="height: {{ alto }}px"
+       aria-valuenow="{{ pct or 0 }}" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar bg-{{ color }}" style="width: {{ pct or 0 }}%">
+      {% if etiqueta and pct is not none %}{{ "%.0f"|format(pct) }}%{% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro confirmar_docente() %}
+  <span class="badge text-bg-warning" title="Dato no confirmado">confirmar con tu docente</span>
+{% endmacro %}

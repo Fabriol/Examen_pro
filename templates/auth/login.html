@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo %}
+{% block titulo %}Iniciar sesión{% endblock %}
+{% block contenido %}
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+    <div class="card shadow-sm mt-3">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-1">Iniciar sesión</h1>
+        <p class="text-muted small mb-4">Prepárate para el Examen Complexivo: teoría, práctica y plan de estudio.</p>
+        <form method="post" action="{{ url_for('auth.login', next=siguiente) if siguiente else url_for('auth.login') }}" novalidate>
+          {{ form.hidden_tag() }}
+          {{ campo(form.email, placeholder="tucorreo@ejemplo.com", tipo_extra={"autocomplete": "email", "autofocus": true}) }}
+          {{ campo(form.password, tipo_extra={"autocomplete": "current-password"}) }}
+          <div class="form-check mb-3">
+            {{ form.recordarme(class="form-check-input") }}
+            {{ form.recordarme.label(class="form-check-label") }}
+          </div>
+          {{ form.enviar(class="btn btn-primary w-100") }}
+        </form>
+        <hr>
+        <p class="mb-0 small text-center">¿No tienes cuenta? <a href="{{ url_for('auth.registro') }}">Regístrate</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

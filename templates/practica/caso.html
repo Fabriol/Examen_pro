@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block titulo %}{{ caso.codigo }} · {{ caso.titulo }}{% endblock %}
+{% block contenido %}
+{% if sesion and sesion.tipo != "intento_practico" %}{% include "_sesion_widget.html" %}{% endif %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+  <div>
+    <span class="badge text-bg-dark">{{ caso.codigo }}</span>
+    <span class="badge text-bg-light border">N{{ caso.nucleo }} · {{ nombres_nucleo[caso.nucleo] }}</span>
+    <h1 class="h3 mt-2 mb-1">{{ caso.titulo }}</h1>
+    <p class="text-muted small mb-0">{{ caso.tecnologia }}</p>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-outline-dark" href="{{ url_for('practica.defensa', codigo=caso.codigo) }}"><i class="bi bi-mic"></i> Defensa</a>
+    <a class="btn btn-outline-secondary" href="#historial" data-abrir-pestana="pestana-historial"><i class="bi bi-clock-history"></i> Historial ({{ intentos|length }})</a>
+  </div>
+</div>
+
+{% if criterio_objetivo and caso.criterio(criterio_objetivo) %}
+{% set obj = caso.criterio(criterio_objetivo) %}
+<div class="alert alert-primary">
+  <i class="bi bi-bullseye"></i> <strong>Objetivo de esta sesión:</strong> {{ obj.id }} · {{ obj.criterio }} ({{ obj.puntaje }} pts).
+  Trabaja sus tareas en tu IDE y ejecuta cada verificación (está destacado en la pestaña Rúbrica).
+</div>
+{% endif %}
+
+{% if pendiente %}
+<div class="alert alert-warning d-flex flex-wrap justify-content-between align-items-center gap-2">
+  <span><i class="bi bi-hourglass-split"></i> Tienes un intento práctico sin terminar ({{ pendiente.caso.codigo }}). Solo puede haber uno a la vez.</span>
+  <span class="d-flex gap-2">
+    <a class="btn btn-sm btn-warning" href="{{ url_for('practica.intento', intento_id=pendiente.id) }}">Continuar</a>
+    <form method="post" action="{{ url_for('practica.descartar', intento_id=pendiente.id) }}" onsubmit="return confirm('¿Descartar el intento pendiente?');">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-sm btn-outline-danger" type="submit">Descartar</button>
+    </form>
+  </span>
+</div>
+{% else %}
+<div class="card border-success shadow-sm mb-3 {% if sesion and sesion.tipo == 'intento_practico' %}border-3{% endif %}" id="iniciar">
+  <div class="card-body">
+    <form method="post" action="{{ url_for('practica.iniciar', codigo=caso.codigo) }}" class="row g-2 align-items-end">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% if sesion and sesion.tipo == "intento_practico" %}<input type="hidden" name="sesion" value="{{ sesion.id }}">{% endif %}
+      <div class="col-12 col-md-5">
+        <label class="form-label fw-semibold" for="minutos">Tiempo del intento (minutos)</label>
+        <input type="number" class="form-control" id="minutos" name="minutos" min="5" max="600" value="{{ minutos_inicio }}" required>
+        <div class="form-text">
+          Sugerido para este caso: {{ caso.tiempo_sugerido_min }} min.
+          <a href="#" data-minutos="{{ minutos_examen }}" class="usar-minutos">Usar duración estimada del examen ({{ minutos_examen }} min)</a>
+          <span class="badge text-bg-warning">confirmar con tu docente</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-stopwatch"></i> Iniciar intento cronometrado</button>
+        {% if sesion and sesion.tipo == "intento_practico" %}<div class="small text-success mt-1">Este intento completará la sesión del plan "{{ sesion.titulo }}".</div>{% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-enunciado" type="button" role="tab">Enunciado</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-rubrica" type="button" role="tab">Rúbrica</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-ambiguedades" type="button" role="tab">Ambigüedades <span class="badge text-bg-warning">{{ caso.ambiguedades|length }}</span></button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-recursos" type="button" role="tab">Recursos</button></li>
+  {% if referencias %}
+  <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-referencia" type="button" role="tab" id="pestana-referencia">Referencia</button></li>
+  {% endif %}
+  <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-historial" type="button" role="tab" id="pestana-historial">Historial</button></li>
+</ul>
+
+<div class="tab-content border border-top-0 rounded-bottom p-3 mb-4 bg-body">
+  <div class="tab-pane fade show active" id="tab-enunciado" role="tabpanel">
+    <p class="texto-enunciado mb-0">{{ caso.enunciado }}</p>
+  </div>
+
+  <div class="tab-pane fade" id="tab-rubrica" role="tabpanel">
+    <p class="small text-muted">La rúbrica suma {{ "%g"|format(caso.puntaje_total) }} puntos. Las tareas y verificaciones son una descomposición para estudiar, no texto oficial.</p>
+    {% for c in caso.rubrica %}
+    <div class="card mb-2 {% if c.id == criterio_objetivo %}border-primary border-2 criterio-objetivo{% endif %}" id="criterio-{{ c.id }}">
+      <div class="card-header d-flex justify-content-between">
+        <span class="fw-semibold">{{ c.id }} · {{ c.criterio }}</span>
+        <span class="badge text-bg-primary">{{ "%g"|format(c.puntaje) }} pts</span>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for t in c.tareas %}
+        <li class="list-group-item">
+          <div>{{ t.texto }}</div>
+          <details class="small text-muted mt-1"><summary>Cómo verificarlo</summary>{{ t.verificacion }}</details>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="tab-pane fade" id="tab-ambiguedades" role="tabpanel">
+    {% for a in caso.ambiguedades %}
+    <div class="alert alert-warning">
+      <div class="fw-semibold mb-1"><i class="bi bi-exclamation-triangle"></i> Confírmalo con tu docente</div>
+      {{ a }}
+    </div>
+    {% else %}
+    <p class="text-muted mb-0">No se detectaron ambigüedades en este caso.</p>
+    {% endfor %}
+  </div>
+
+  <div class="tab-pane fade" id="tab-recursos" role="tabpanel">
+    {% if not locales and not externos %}<p class="text-muted mb-0">Este caso no trae archivos de apoyo.</p>{% endif %}
+    {% if locales %}
+    <ul class="list-group mb-3">
+      {% for nombre in locales %}
+      <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <span><i class="bi bi-file-earmark-code"></i> {{ nombre }}</span>
+        <span class="d-flex gap-2">
+          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('practica.recurso', nombre=nombre) }}" target="_blank" rel="noopener">Ver</a>
+          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('practica.recurso', nombre=nombre, descargar=1) }}"><i class="bi bi-download"></i> Descargar</a>
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if externos %}
+    <p class="small mb-1">Enlaces externos:</p>
+    <ul>
+      {% for url in externos %}<li><a href="{{ url }}" target="_blank" rel="noopener noreferrer">{{ url }}</a></li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+  {% if referencias %}
+  <div class="tab-pane fade" id="tab-referencia" role="tabpanel">
+    <div class="alert alert-info">{{ nota_referencia }}</div>
+    <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#contenido-referencia">
+      <i class="bi bi-eye"></i> Mostrar / ocultar la referencia (mejor después de tu intento)
+    </button>
+    <div class="collapse" id="contenido-referencia">
+      {% for r in referencias %}
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span class="fw-semibold">{{ r.titulo }} <small class="text-muted">({{ r.archivo }})</small></span>
+          <button class="btn btn-sm btn-outline-secondary" type="button" data-copiar="#codigo-ref-{{ loop.index }}"><i class="bi bi-clipboard"></i> Copiar</button>
+        </div>
+        <pre class="bloque-codigo mb-0"><code id="codigo-ref-{{ loop.index }}" class="language-{{ r.lenguaje }}">{{ r.contenido }}</code></pre>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="tab-pane fade" id="tab-historial" role="tabpanel">
+    <a id="historial"></a>
+    {% if intentos %}
+    <div class="table-responsive">
+      <table class="table table-sm align-middle mb-0">
+        <thead><tr><th>Inicio</th><th>Duración</th><th>Estado</th><th>Nota</th><th>Válido</th><th></th></tr></thead>
+        <tbody>
+          {% for i in intentos %}
+          <tr>
+            <td>{{ i.fecha_inicio|fecha_hora }}</td>
+            <td>{{ i.duracion_segundos|mmss if i.duracion_segundos is not none else "—" }}</td>
+            <td>{% if i.completado %}Completado{% elif i.terminado %}Falta autoevaluar{% else %}En curso{% endif %}</td>
+            <td>{{ "%.2f"|format(i.nota_autoevaluada) if i.nota_autoevaluada is not none else "—" }}</td>
+            <td>{% if es_valido(i, caso) %}<span class="text-success">✓</span>{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td class="text-end">
+              {% if i.completado %}<a class="btn btn-sm btn-outline-primary" href="{{ url_for('practica.resultado', intento_id=i.id) }}">Ver</a>
+              {% else %}<a class="btn btn-sm btn-outline-warning" href="{{ url_for('practica.intento', intento_id=i.id) }}">Continuar</a>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="text-muted mb-0">Aún no tienes intentos en este caso.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sesion.js') }}"></script>
+<script src="{{ url_for('static', filename='js/practica.js') }}"></script>
+{% if criterio_objetivo %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var boton = document.querySelector('[data-bs-target="#tab-rubrica"]');
+    if (boton && window.bootstrap) { bootstrap.Tab.getOrCreateInstance(boton).show(); }
+    var obj = document.querySelector('.criterio-objetivo');
+    if (obj) { setTimeout(function () { obj.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 250); }
+  });
+</script>
+{% endif %}
+{% endblock %}

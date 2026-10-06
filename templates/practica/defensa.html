@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% from "_macros.html" import barra %}
+{% block titulo %}Defensa {{ caso.codigo }}{% endblock %}
+{% block contenido %}
+{% include "_sesion_widget.html" %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <span class="badge text-bg-dark">{{ caso.codigo }}</span>
+    <h1 class="h4 d-inline ms-1">Defensa · {{ caso.titulo }}</h1>
+    {% if caso.codigo == "P2" %}<div class="small text-danger fw-semibold">En este caso la defensa oral vale 3 de 10 puntos.</div>{% endif %}
+  </div>
+  <a class="btn btn-outline-secondary" href="{{ url_for('practica.caso', codigo=caso.codigo) }}">Volver al caso</a>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between small mb-1">
+      <span>Dominio de la defensa (parcial cuenta 0.5)</span>
+      <span>meta {{ umbral }} %</span>
+    </div>
+    <div id="barra-dominio">{{ barra(dominio, "success" if dominio >= umbral else ("warning" if dominio >= 50 else "danger")) }}</div>
+  </div>
+</div>
+
+<ul class="nav nav-pills mb-3" role="tablist">
+  <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#modo-tarjetas" type="button">Tarjetas</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#modo-oral" type="button"><i class="bi bi-stopwatch"></i> Simulacro oral (2 min/pregunta)</button></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="modo-tarjetas">
+    {% for t in datos.tarjetas %}
+    <div class="card mb-3 tarjeta-defensa" data-indice="{{ t.indice }}">
+      <div class="card-body">
+        <div class="d-flex justify-content-between gap-2">
+          <p class="fw-semibold mb-2">{{ loop.index }}. {{ t.pregunta }}</p>
+          <span class="badge nivel-defensa align-self-start {% if t.nivel == 'dominado' %}text-bg-success{% elif t.nivel == 'parcial' %}text-bg-warning{% elif t.nivel == 'no_se' %}text-bg-danger{% else %}text-bg-secondary{% endif %}">
+            {% if t.nivel == 'dominado' %}Dominado{% elif t.nivel == 'parcial' %}Parcial{% elif t.nivel == 'no_se' %}No sé{% else %}Sin ensayar{% endif %}
+          </span>
+        </div>
+        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#clave-{{ t.indice }}">Ver respuesta clave</button>
+        <div class="collapse mt-2" id="clave-{{ t.indice }}">
+          <div class="alert alert-light border mb-2">{{ t.clave }}</div>
+          <div class="btn-group btn-group-sm" role="group" aria-label="Autocalificación">
+            <button type="button" class="btn btn-outline-danger calificar" data-indice="{{ t.indice }}" data-nivel="no_se">No sé</button>
+            <button type="button" class="btn btn-outline-warning calificar" data-indice="{{ t.indice }}" data-nivel="parcial">Parcial</button>
+            <button type="button" class="btn btn-outline-success calificar" data-indice="{{ t.indice }}" data-nivel="dominado">Dominado</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="tab-pane fade" id="modo-oral">
+    <div class="card">
+      <div class="card-body">
+        <p class="small text-muted">Responde en voz alta como en la defensa real. Orden aleatorio, primero las que no dominas. Tienes 2 minutos por pregunta; al agotarse se muestra la respuesta clave.</p>
+        <div id="oral-inicio"><button class="btn btn-primary" type="button" id="oral-empezar"><i class="bi bi-play-fill"></i> Empezar simulacro oral</button></div>
+        <div id="oral-panel" class="d-none">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="small text-muted">Pregunta <span id="oral-num">1</span> de <span id="oral-total">{{ datos.tarjetas|length }}</span></span>
+            <span id="oral-reloj" class="badge text-bg-dark fs-5 font-monospace">02:00</span>
+          </div>
+          <p class="fs-5 fw-semibold" id="oral-pregunta"></p>
+          <button class="btn btn-outline-primary btn-sm mb-2" type="button" id="oral-ver">Ver respuesta clave</button>
+          <div id="oral-clave" class="alert alert-light border d-none"></div>
+          <div id="oral-calificar" class="btn-group d-none" role="group" aria-label="Autocalificación">
+            <button type="button" class="btn btn-outline-danger" data-nivel="no_se">No sé</button>
+            <button type="button" class="btn btn-outline-warning" data-nivel="parcial">Parcial</button>
+            <button type="button" class="btn btn-outline-success" data-nivel="dominado">Dominado</button>
+          </div>
+        </div>
+        <div id="oral-fin" class="alert alert-success d-none mt-3 mb-0">Simulacro oral terminado. Revisa tu barra de dominio y repite las que marcaste "No sé".</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script id="datos-defensa" type="application/json">{{ datos|tojson }}</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sesion.js') }}"></script>
+<script src="{{ url_for('static', filename='js/practica.js') }}"></script>
+{% endblock %}

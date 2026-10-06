@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% from "_macros.html" import barra %}
+{% block titulo %}Resultado del examen{% endblock %}
+{% block contenido %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <h1 class="h3 mb-0">Resultado</h1>
+    <small class="text-muted">{{ descripcion }} · finalizado el {{ intento.fecha_fin|fecha_hora }}</small>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-primary" href="{{ url_for('examen.configurar') }}"><i class="bi bi-plus-lg"></i> Nuevo examen</a>
+    <a class="btn btn-outline-danger" href="{{ url_for('examen.configurar', modo='fallidas') }}"><i class="bi bi-arrow-repeat"></i> Practicar falladas</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('dashboard.index') }}">Dashboard</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-12 col-md-4">
+    <div class="card text-center h-100 border-{{ color }} shadow-sm">
+      <div class="card-body">
+        <div class="text-muted small">Nota</div>
+        <div class="display-4 fw-bold text-{{ color }}">{{ "%.2f"|format(intento.nota) }}</div>
+        <div class="text-muted">sobre 10</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-8">
+    <div class="row g-2 h-100">
+      <div class="col-6 col-sm-4"><div class="card h-100"><div class="card-body py-2"><div class="small text-muted">Aciertos</div><div class="fs-4 text-success fw-semibold">{{ intento.aciertos }}</div></div></div></div>
+      <div class="col-6 col-sm-4"><div class="card h-100"><div class="card-body py-2"><div class="small text-muted">Fallos</div><div class="fs-4 text-danger fw-semibold">{{ fallos }}</div></div></div></div>
+      <div class="col-6 col-sm-4"><div class="card h-100"><div class="card-body py-2"><div class="small text-muted">En blanco</div><div class="fs-4 text-secondary fw-semibold">{{ blancos }}</div></div></div></div>
+      <div class="col-6 col-sm-4"><div class="card h-100"><div class="card-body py-2"><div class="small text-muted">Porcentaje</div><div class="fs-4 fw-semibold">{{ pct }}%</div></div></div></div>
+      <div class="col-6 col-sm-4"><div class="card h-100"><div class="card-body py-2"><div class="small text-muted">Tiempo</div><div class="fs-4 fw-semibold">{{ intento.duracion_segundos|mmss }}</div></div></div></div>
+      <div class="col-6 col-sm-4"><div class="card h-100"><div class="card-body py-2"><div class="small text-muted">Preguntas</div><div class="fs-4 fw-semibold">{{ intento.total_preguntas }}</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-{{ color }}">{{ mensaje }}</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-12 col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">Desglose por núcleo</div>
+      <div class="card-body">
+        {% for n, d in por_nucleo.items() %}
+          <div class="d-flex justify-content-between small"><span>N{{ n }} · {{ nombres_nucleo[n] }}</span><span>{{ d.aciertos }}/{{ d.total }}{% if d.blancos %} · {{ d.blancos }} en blanco{% endif %}</span></div>
+          <div class="mb-2">{{ barra(d.pct, "success" if d.pct >= 70 else ("warning" if d.pct >= 50 else "danger")) }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">Desglose por nivel</div>
+      <div class="card-body">
+        {% for nivel, d in por_nivel.items() %}
+          <div class="d-flex justify-content-between small"><span>{{ nombres_nivel[nivel] }}</span><span>{{ d.aciertos }}/{{ d.total }}{% if d.blancos %} · {{ d.blancos }} en blanco{% endif %}</span></div>
+          <div class="mb-2">{{ barra(d.pct, "success" if d.pct >= 70 else ("warning" if d.pct >= 50 else "danger")) }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="h4 mb-3">Revisión</h2>
+{% include "examen/_revision.html" %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Las marcas de "revisar después" viven en localStorage y se limpian al finalizar.
+  try { localStorage.removeItem('examen-{{ intento.id }}-marcadas'); } catch (e) { /* sin almacenamiento */ }
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% from "_macros.html" import barra %}
+{% block titulo %}Resultado {{ caso.codigo }}{% endblock %}
+{% block contenido %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <span class="badge text-bg-dark">{{ caso.codigo }}</span>
+    <h1 class="h4 d-inline ms-1">Resultado · {{ caso.titulo }}</h1>
+    <div class="small text-muted">Finalizado el {{ intento.fecha_fin|fecha_hora }}</div>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-primary" href="{{ url_for('practica.caso', codigo=caso.codigo) }}">Volver al caso</a>
+    <a class="btn btn-outline-dark" href="{{ url_for('practica.defensa', codigo=caso.codigo) }}"><i class="bi bi-mic"></i> Defensa</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-12 col-md-4">
+    <div class="card text-center h-100 border-{{ semaforo }}">
+      <div class="card-body">
+        <div class="small text-muted">Nota autoevaluada</div>
+        <div class="display-4 fw-bold text-{{ semaforo }}">{{ "%.2f"|format(intento.nota_autoevaluada) }}</div>
+        <div class="text-muted">sobre 10 · ajustada para el veredicto: {{ "%.2f"|format(nota_ajustada) }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-8">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="mb-1"><strong>Tiempo usado:</strong> {{ intento.duracion_segundos|mmss }} de {{ intento.tiempo_limite_segundos|mmss }}</p>
+        <p class="mb-1"><strong>Intento válido para el veredicto:</strong> {% if valido %}<span class="text-success">sí</span>{% else %}<span class="text-danger">no</span>{% endif %}</p>
+        <p class="mb-0 small text-muted">Nota mínima de referencia: {{ "%.1f"|format(nota_minima) }} <span class="badge text-bg-warning">confirmar con tu docente</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header fw-semibold">Desglose por criterio</div>
+  <div class="card-body">
+    {% for d in desglose %}
+    <div class="mb-3">
+      <div class="d-flex justify-content-between small">
+        <span>{{ d.criterio.id }} · {{ d.criterio.criterio }}</span>
+        <span>{{ "%.2f"|format(d.ev.puntaje_final if d.ev else 0) }} / {{ "%g"|format(d.criterio.puntaje) }}</span>
+      </div>
+      {{ barra(d.pct, d.color) }}
+      {% if d.ev and d.ev.comentario %}<div class="small text-muted mt-1"><i class="bi bi-chat-left-text"></i> {{ d.ev.comentario }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header fw-semibold">Qué reforzar</div>
+  <div class="card-body">
+    {% if reforzar %}
+    <ul class="mb-0">
+      {% for d in reforzar %}
+      <li>
+        <strong>{{ d.criterio.id }} · {{ d.criterio.criterio }}</strong> ({{ "%.0f"|format(d.pct) }} %) —
+        <a href="{{ url_for('practica.caso', codigo=caso.codigo, criterio=d.criterio.id) }}">repasar sus tareas</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="mb-0 text-success">¡Muy bien! Ningún criterio quedó por debajo del 70 %.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

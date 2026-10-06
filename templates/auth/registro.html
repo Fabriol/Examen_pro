@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo %}
+{% block titulo %}Crear cuenta{% endblock %}
+{% block contenido %}
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+    <div class="card shadow-sm mt-3">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-1">Crear cuenta</h1>
+        <p class="text-muted small mb-4">Tus intentos, tu plan y tu veredicto se guardan en tu cuenta.</p>
+        <form method="post" action="{{ url_for('auth.registro') }}" novalidate>
+          {{ form.hidden_tag() }}
+          {{ campo(form.nombre_completo, placeholder="Nombre y apellido", tipo_extra={"autocomplete": "name", "autofocus": true}) }}
+          {{ campo(form.email, placeholder="tucorreo@ejemplo.com", tipo_extra={"autocomplete": "email"}) }}
+          {{ campo(form.password, ayuda="Mínimo 8 caracteres.", tipo_extra={"autocomplete": "new-password", "minlength": 8}) }}
+          {{ campo(form.confirmar, tipo_extra={"autocomplete": "new-password"}) }}
+          {{ form.enviar(class="btn btn-primary w-100") }}
+        </form>
+        <hr>
+        <p class="mb-0 small text-center">¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block titulo %}Intento práctico pendiente{% endblock %}
+{% block contenido %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <div class="card border-warning shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4"><i class="bi bi-hourglass-split text-warning"></i> Ya tienes un intento práctico pendiente</h1>
+        <p class="mb-1"><strong>{{ intento.caso.codigo }} · {{ intento.caso.titulo }}</strong> · iniciado el {{ intento.fecha_inicio|fecha_hora }}</p>
+        {% if intento.terminado %}
+          <p class="text-muted">El cronómetro ya se detuvo: solo falta tu autoevaluación.</p>
+        {% elif restante > 0 %}
+          <p class="text-muted">Tiempo restante: {{ restante|mmss }}.</p>
+        {% else %}
+          <p class="text-muted">Su tiempo se agotó: al abrirlo pasarás a la autoevaluación.</p>
+        {% endif %}
+        <p>Solo puede haber <strong>un intento práctico pendiente</strong>. ¿Qué quieres hacer?</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-primary" href="{{ url_for('practica.intento', intento_id=intento.id) }}"><i class="bi bi-play-fill"></i> Continuar</a>
+          <form method="post" action="{{ url_for('practica.descartar', intento_id=intento.id) }}"
+                onsubmit="return confirm('¿Descartar este intento? Se perderán su checklist y notas.');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Descartar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

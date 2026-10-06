@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block titulo %}Examen en curso{% endblock %}
+{% block contenido %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <h1 class="h5 mb-0">{{ descripcion }}</h1>
+    <small class="text-muted"><span id="contador-respondidas">0</span> de {{ intento.total_preguntas }} respondidas</small>
+  </div>
+  <div class="d-flex align-items-center gap-2">
+    <span id="temporizador" class="badge text-bg-dark fs-5 font-monospace" aria-live="polite" title="Tiempo restante">--:--</span>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-finalizar">
+      <i class="bi bi-flag-fill"></i> Finalizar
+    </button>
+  </div>
+</div>
+
+<div id="aviso-guardado" class="alert alert-warning py-2 d-none" role="alert"></div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-1">
+        <span class="fw-semibold">Pregunta <span id="num-actual">1</span> de {{ intento.total_preguntas }}</span>
+        <small class="text-muted" id="meta-pregunta"></small>
+      </div>
+      <div class="card-body">
+        <div id="enunciado" class="enunciado-pregunta mb-3"></div>
+        <div id="opciones" class="list-group" role="radiogroup" aria-label="Opciones de respuesta"></div>
+      </div>
+      <div class="card-footer d-flex flex-wrap justify-content-between gap-2">
+        <button type="button" class="btn btn-outline-secondary" id="btn-anterior"><i class="bi bi-arrow-left"></i> Anterior</button>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-warning" id="btn-marcar"><i class="bi bi-bookmark"></i> <span>Marcar</span></button>
+          <button type="button" class="btn btn-outline-secondary" id="btn-borrar" title="Dejar en blanco"><i class="bi bi-eraser"></i> Borrar</button>
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-siguiente">Siguiente <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+    <p class="small text-muted mt-2 mb-0">Atajos: teclas 1–4 o A–D para responder, ← → para moverte. Cada respuesta se guarda al instante.</p>
+  </div>
+
+  <div class="col-12 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Navegación</div>
+      <div class="card-body">
+        <div id="grilla" class="grilla-preguntas"></div>
+        <div class="d-flex flex-wrap gap-3 small mt-3">
+          <span><span class="leyenda bg-white border"></span> Sin responder</span>
+          <span><span class="leyenda bg-primary"></span> Respondida</span>
+          <span><span class="leyenda bg-warning"></span> Marcada</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-finalizar" tabindex="-1" aria-labelledby="titulo-modal-finalizar" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-5" id="titulo-modal-finalizar">¿Finalizar el examen?</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p id="texto-sin-responder" class="mb-0"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Seguir respondiendo</button>
+        <button type="button" class="btn btn-success" id="btn-confirmar-finalizar">Finalizar ahora</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form method="post" action="{{ url_for('examen.finalizar', intento_id=intento.id) }}" id="form-finalizar" class="d-none">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+
+<script id="datos-examen" type="application/json">{{ datos|tojson }}</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/examen.js') }}"></script>
+{% endblock %}

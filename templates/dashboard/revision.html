@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block titulo %}Revisión del intento{% endblock %}
+{% block contenido %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <h1 class="h4 mb-0">Revisión · {{ descripcion }}</h1>
+    <small class="text-muted">{{ intento.fecha_fin|fecha_hora }} · nota {{ "%.2f"|format(intento.nota) }} · {{ intento.aciertos }}/{{ intento.total_preguntas }}</small>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-primary" href="{{ url_for('examen.resultado', intento_id=intento.id) }}">Ver resultado completo</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('dashboard.historial') }}">Historial</a>
+  </div>
+</div>
+{% include "examen/_revision.html" %}
+{% endblock %}

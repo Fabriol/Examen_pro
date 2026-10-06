@@ -1,0 +1,732 @@
+[
+  {
+    "codigo": "P1",
+    "nucleo": 1,
+    "titulo": "VetCare — Spring Boot MVC + Spring Security + Thymeleaf",
+    "tecnologia": "Java, Spring Boot 3.x (MVC, Data JPA, Security 6), Thymeleaf, Bootstrap 5, MySQL o PostgreSQL",
+    "tiempo_sugerido_min": 180,
+    "enunciado": "VetCare es una plataforma de gestión para clínicas veterinarias (Ecuador, desde 2021). Se desarrolla una aplicación web para centralizar el registro de mascotas y mejorar la seguridad de acceso del personal médico. Requerimientos: (1) Arquitectura Spring Boot MVC: definir y configurar todas las entidades. (2) Modelo de BD: generar el esquema a partir de las entidades Java con las relaciones correspondientes. (3) Spring Security: registro e inicio de sesión con autenticación y autorización. (4) Interfaz web dinámica con Thymeleaf y Bootstrap, moderna y responsiva. (5) CRUD de mascotas. Tablas: Usuario (ID, Nombre, Email, Contraseña encriptada); Especie (ID, Nombre p.ej. Canino/Felino, Descripción); Mascota (ID, Nombre, Edad, Raza, Especie con relación a la tabla anterior).",
+    "rubrica": [
+      {
+        "id": "P1-R1",
+        "criterio": "Creación de la arquitectura Spring Boot MVC",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P1-R1-T1",
+            "texto": "Crear el proyecto (Spring Initializr) con Web, Data JPA, Security, Thymeleaf, Validation, DevTools y el driver de la BD",
+            "verificacion": "La app arranca con ./mvnw spring-boot:run sin errores"
+          },
+          {
+            "id": "P1-R1-T2",
+            "texto": "Organizar paquetes: controller, service, repository, model (entidades) y config",
+            "verificacion": "El árbol de paquetes muestra las 4-5 capas separadas"
+          },
+          {
+            "id": "P1-R1-T3",
+            "texto": "Configurar application.properties: datasource, spring.jpa.hibernate.ddl-auto=update, spring.jpa.show-sql=true",
+            "verificacion": "Al arrancar, la consola muestra los CREATE TABLE de Hibernate"
+          }
+        ]
+      },
+      {
+        "id": "P1-R2",
+        "criterio": "Implementación de relaciones",
+        "puntaje": 1.5,
+        "tareas": [
+          {
+            "id": "P1-R2-T1",
+            "texto": "Entidades User, Species y Pet con @Entity, @Id y @GeneratedValue(strategy = GenerationType.IDENTITY)",
+            "verificacion": "Las 3 tablas existen en la BD tras arrancar"
+          },
+          {
+            "id": "P1-R2-T2",
+            "texto": "Relación Pet -> Species con @ManyToOne y @JoinColumn(name = \"especie_id\"); opcional @OneToMany(mappedBy) en Species",
+            "verificacion": "La tabla pet tiene la FK especie_id hacia species"
+          },
+          {
+            "id": "P1-R2-T3",
+            "texto": "Poblar Species con datos iniciales (Canino, Felino) por CommandLineRunner o data.sql",
+            "verificacion": "SELECT * FROM species devuelve filas al arrancar"
+          }
+        ]
+      },
+      {
+        "id": "P1-R3",
+        "criterio": "Interfaz web con diseño responsivo (Thymeleaf + Bootstrap)",
+        "puntaje": 2.5,
+        "tareas": [
+          {
+            "id": "P1-R3-T1",
+            "texto": "Plantilla base con fragmento de navbar (th:fragment / th:replace) y Bootstrap 5 por CDN con meta viewport",
+            "verificacion": "La barra de navegación aparece en todas las vistas"
+          },
+          {
+            "id": "P1-R3-T2",
+            "texto": "Vistas de login y registro",
+            "verificacion": "Ambas cargan y envían el formulario correctamente"
+          },
+          {
+            "id": "P1-R3-T3",
+            "texto": "Vista de listado de mascotas (tabla o tarjetas) con botones Editar y Eliminar",
+            "verificacion": "Se listan las mascotas guardadas"
+          },
+          {
+            "id": "P1-R3-T4",
+            "texto": "Formulario de crear/editar mascota con <select> de especies",
+            "verificacion": "Se puede elegir la especie y guardar"
+          },
+          {
+            "id": "P1-R3-T5",
+            "texto": "Diseño responsivo con grid de Bootstrap (container, row, col-md-*)",
+            "verificacion": "En el modo móvil del navegador (F12) la vista se reacomoda sin scroll horizontal"
+          }
+        ]
+      },
+      {
+        "id": "P1-R4",
+        "criterio": "Lógica del aplicativo (persistencia de datos)",
+        "puntaje": 3.0,
+        "tareas": [
+          {
+            "id": "P1-R4-T1",
+            "texto": "Repositorios que extienden JpaRepository (UserRepository con findByEmail, SpeciesRepository, PetRepository)",
+            "verificacion": "Los repositorios compilan y se inyectan"
+          },
+          {
+            "id": "P1-R4-T2",
+            "texto": "Capa @Service con la lógica de negocio y @Transactional donde corresponda",
+            "verificacion": "Los controladores usan servicios, no repositorios directos"
+          },
+          {
+            "id": "P1-R4-T3",
+            "texto": "Controlador con Crear (GET form + POST), Leer (listado), Actualizar (GET/POST editar) y Eliminar",
+            "verificacion": "Cada operación se refleja en la tabla pet de la BD"
+          },
+          {
+            "id": "P1-R4-T4",
+            "texto": "Validaciones con @Valid y mensajes en el formulario (nombre obligatorio, edad >= 0)",
+            "verificacion": "Enviar el formulario vacío muestra errores y no guarda"
+          },
+          {
+            "id": "P1-R4-T5",
+            "texto": "Persistencia real (no H2 en memoria)",
+            "verificacion": "Reiniciar la app y los datos siguen en la BD"
+          }
+        ]
+      },
+      {
+        "id": "P1-R5",
+        "criterio": "Spring Security para registro e inicio de sesión",
+        "puntaje": 2.0,
+        "tareas": [
+          {
+            "id": "P1-R5-T1",
+            "texto": "Bean SecurityFilterChain (Spring Security 6): rutas públicas (/login, /registro, /css/**, /js/**) y el resto authenticated()",
+            "verificacion": "Sin sesión, /mascotas redirige a /login"
+          },
+          {
+            "id": "P1-R5-T2",
+            "texto": "PasswordEncoder con BCryptPasswordEncoder",
+            "verificacion": "En la BD la contraseña se ve como hash $2a$..., nunca en texto plano"
+          },
+          {
+            "id": "P1-R5-T3",
+            "texto": "UserDetailsService propio que carga el usuario por email",
+            "verificacion": "El login funciona con un usuario registrado"
+          },
+          {
+            "id": "P1-R5-T4",
+            "texto": "Registro de usuarios que guarda la contraseña encriptada",
+            "verificacion": "Un usuario nuevo puede iniciar sesión inmediatamente"
+          },
+          {
+            "id": "P1-R5-T5",
+            "texto": "Login personalizado con formLogin, logout y autorización por rol (p.ej. solo ADMIN elimina)",
+            "verificacion": "Un usuario sin el rol recibe 403 al intentar eliminar"
+          }
+        ]
+      }
+    ],
+    "defensa": [
+      {
+        "pregunta": "¿Qué hace BCryptPasswordEncoder y por qué no se guarda la contraseña en texto plano?",
+        "clave": "Genera un hash con sal, de una sola vía. Si se filtra la BD no se obtienen las contraseñas originales."
+      },
+      {
+        "pregunta": "¿Cómo mapeaste la relación entre Mascota y Especie?",
+        "clave": "Muchos a uno: @ManyToOne + @JoinColumn en Pet (FK especie_id). Opcionalmente @OneToMany(mappedBy) en Species."
+      },
+      {
+        "pregunta": "¿Qué hace spring.jpa.hibernate.ddl-auto=update y qué otros valores existen?",
+        "clave": "update crea/ajusta tablas según las entidades sin borrar datos. create recrea todo al arrancar, create-drop además borra al cerrar, validate solo comprueba y none no hace nada."
+      },
+      {
+        "pregunta": "Describe el flujo MVC de una petición para listar mascotas.",
+        "clave": "Navegador -> Controller -> Service -> Repository -> BD; el resultado va al Model y Thymeleaf renderiza la Vista que vuelve al usuario."
+      },
+      {
+        "pregunta": "¿Diferencia entre autenticación y autorización en tu aplicación?",
+        "clave": "Autenticación: verificar quién eres (login). Autorización: qué puedes hacer según tu rol (p.ej. solo ADMIN elimina)."
+      }
+    ],
+    "ambiguedades": [
+      "El enunciado pide 'autenticación y autorización' pero no define roles: decide y justifica (ROLE_USER / ROLE_ADMIN) o confirma con tu docente."
+    ],
+    "recursos": []
+  },
+  {
+    "codigo": "P2",
+    "nucleo": 2,
+    "titulo": "EduTech Academy — Taller macro de bases de datos (SQL + MongoDB)",
+    "tecnologia": "Restaurar cursos_backup.sql por consola; vistas, roles, triggers; MongoDB. El backup usa SERIAL: muy probablemente PostgreSQL",
+    "tiempo_sugerido_min": 180,
+    "enunciado": "EduTech Academy ofrece cursos en línea. El sistema administra estudiantes, instructores, cursos y matrículas; las opiniones y valoraciones de los estudiantes sobre los cursos se guardan en MongoDB. Se entrega un archivo de respaldo con tablas y datos iniciales. Indicaciones: 1) Restaurar la BD por consola. 2) Reglas de negocio: a) correo del estudiante único; b) nivel del curso solo Básico, Intermedio, Avanzado. 3) El número de estudiantes permitidos en un curso: mínimo 10, máximo 60. 4) Vistas: a) estudiante, curso, fecha de matrícula, nivel; b) curso, instructor, especialidad del instructor. 5) Usuarios: Administrador (acceso completo a todas las tablas y operaciones) y Usuario de Consultas (solo lectura sobre las vistas). 6) Triggers: a) al eliminar un curso se eliminan sus matrículas; b) al insertar una matrícula se reduce en 1 los cupos disponibles del curso. 7) Implementar en MongoDB las valoraciones. 8) Colecciones: Estudiantes (nombre, apellido, correo) y Cursos (nombre, descripción, valoraciones: arreglo de objetos con estudiante_id, comentario, puntuación, fecha). 9) Consultas MongoDB: a) valoraciones de un curso; b) comentarios de un estudiante; c) comentarios de un estudiante sobre todos los cursos en los que está matriculado.",
+    "rubrica": [
+      {
+        "id": "P2-R1",
+        "criterio": "Diseño físico y reglas de integridad",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P2-R1-T1",
+            "texto": "Crear la BD y restaurar el backup por consola (psql -U postgres -d cursosdb -f cursos_backup.sql)",
+            "verificacion": "SELECT count(*) FROM matriculas devuelve 8"
+          },
+          {
+            "id": "P2-R1-T2",
+            "texto": "UNIQUE sobre estudiantes.correo",
+            "verificacion": "Insertar un correo repetido da error de clave duplicada"
+          },
+          {
+            "id": "P2-R1-T3",
+            "texto": "Normalizar 'Basico' a 'Básico' y CHECK de nivel IN ('Básico','Intermedio','Avanzado')",
+            "verificacion": "Insertar un curso con nivel 'Experto' falla"
+          },
+          {
+            "id": "P2-R1-T4",
+            "texto": "CHECK de cupos_disponibles entre 10 y 60",
+            "verificacion": "Insertar un curso con 5 cupos falla"
+          }
+        ]
+      },
+      {
+        "id": "P2-R2",
+        "criterio": "Vistas",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P2-R2-T1",
+            "texto": "vista_matriculas: estudiante, curso, fecha_matricula, nivel (JOIN de 3 tablas)",
+            "verificacion": "SELECT * FROM vista_matriculas devuelve 8 filas"
+          },
+          {
+            "id": "P2-R2-T2",
+            "texto": "vista_cursos_instructores: curso, instructor, especialidad",
+            "verificacion": "SELECT * FROM vista_cursos_instructores devuelve 5 filas"
+          }
+        ]
+      },
+      {
+        "id": "P2-R3",
+        "criterio": "Usuarios y privilegios",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P2-R3-T1",
+            "texto": "Rol administrador con todos los privilegios sobre tablas y secuencias",
+            "verificacion": "Con ese rol se puede INSERT/UPDATE/DELETE en cualquier tabla"
+          },
+          {
+            "id": "P2-R3-T2",
+            "texto": "Rol usuario_consultas con GRANT SELECT solo sobre las 2 vistas",
+            "verificacion": "SELECT sobre una vista funciona; SELECT * FROM cursos da 'permission denied'"
+          }
+        ]
+      },
+      {
+        "id": "P2-R4",
+        "criterio": "Triggers",
+        "puntaje": 2.0,
+        "tareas": [
+          {
+            "id": "P2-R4-T1",
+            "texto": "Función + trigger BEFORE DELETE ON cursos que borra las matrículas del curso",
+            "verificacion": "DELETE FROM cursos WHERE id_curso=1; y luego 0 matrículas de ese curso"
+          },
+          {
+            "id": "P2-R4-T2",
+            "texto": "Función + trigger AFTER INSERT ON matriculas que resta 1 a cupos_disponibles",
+            "verificacion": "Antes 40 cupos; tras insertar una matrícula, 39"
+          }
+        ]
+      },
+      {
+        "id": "P2-R5",
+        "criterio": "Implementación y consultas MongoDB",
+        "puntaje": 2.0,
+        "tareas": [
+          {
+            "id": "P2-R5-T1",
+            "texto": "Crear colecciones estudiantes y cursos con al menos 3 cursos y varias valoraciones embebidas",
+            "verificacion": "db.cursos.countDocuments() >= 3"
+          },
+          {
+            "id": "P2-R5-T2",
+            "texto": "Consulta 9a: valoraciones de un curso (find con proyección)",
+            "verificacion": "Devuelve solo las valoraciones del curso pedido"
+          },
+          {
+            "id": "P2-R5-T3",
+            "texto": "Consulta 9b: comentarios de un estudiante (aggregate: $unwind + $match + $project)",
+            "verificacion": "Devuelve un documento por comentario del estudiante"
+          },
+          {
+            "id": "P2-R5-T4",
+            "texto": "Consulta 9c: comentarios de un estudiante en los cursos en que está matriculado (cruzar ids de matrícula con $in)",
+            "verificacion": "Solo aparecen cursos donde el estudiante tiene matrícula"
+          }
+        ]
+      },
+      {
+        "id": "P2-R6",
+        "criterio": "Defensa del caso práctico",
+        "puntaje": 3.0,
+        "tareas": [
+          {
+            "id": "P2-R6-T1",
+            "texto": "Ensayar las preguntas de defensa (modo tarjetas de la app) hasta dominarlas",
+            "verificacion": "Puedes explicar cada decisión sin mirar tu código"
+          },
+          {
+            "id": "P2-R6-T2",
+            "texto": "Poder explicar cada script línea por línea (función plpgsql, CHECK, GRANT, aggregate)",
+            "verificacion": "Explicas por qué el trigger de borrado es BEFORE y no AFTER"
+          }
+        ]
+      }
+    ],
+    "defensa": [
+      {
+        "pregunta": "¿Por qué el trigger de borrado de curso es BEFORE DELETE y no AFTER DELETE?",
+        "clave": "Porque la FK de matriculas impide borrar el curso mientras existan matrículas. Con AFTER DELETE el DELETE ya falla por la FK antes de que el trigger limpie. BEFORE borra primero las matrículas."
+      },
+      {
+        "pregunta": "¿Por qué falla el CHECK de nivel si no normalizas 'Basico' a 'Básico'?",
+        "clave": "ALTER TABLE ... ADD CONSTRAINT CHECK valida las filas existentes; el backup trae 'Basico' sin tilde y violaría la restricción. Hay que actualizar los datos antes."
+      },
+      {
+        "pregunta": "¿Cómo garantizas que el usuario de consultas solo lee las vistas?",
+        "clave": "GRANT SELECT solo sobre las 2 vistas y ningún permiso sobre las tablas. Prueba: SELECT sobre una vista funciona y SELECT * FROM cursos da permission denied."
+      },
+      {
+        "pregunta": "¿Por qué guardar las valoraciones como arreglo embebido en MongoDB?",
+        "clave": "Esquema flexible y crecimiento rápido; se lee un curso con todas sus valoraciones en un solo documento. Trade-off: el documento crece (límite de 16 MB); si crece demasiado, una colección aparte de valoraciones."
+      },
+      {
+        "pregunta": "Con CHECK de cupos entre 10 y 60 y un trigger que resta 1, ¿qué problema aparece?",
+        "clave": "Un curso con 10 cupos no podría recibir matrículas: el trigger lo bajaría a 9 y el CHECK rechazaría el UPDATE. Es una decisión de diseño; alternativa: una columna cupo_maximo (10-60) separada de los cupos disponibles."
+      },
+      {
+        "pregunta": "¿Diferencia entre una vista y una tabla y qué ventaja de seguridad da?",
+        "clave": "La vista es una consulta guardada, no almacena datos. Permite exponer solo columnas y filas autorizadas y dar acceso de solo lectura sin tocar las tablas base."
+      },
+      {
+        "pregunta": "Las matrículas están en SQL y las valoraciones en MongoDB: ¿cómo resuelves la consulta 9c?",
+        "clave": "Obtienes en SQL los id_curso del estudiante y los usas con $in en MongoDB (o guardas las matrículas también en Mongo). Los ids numéricos de Mongo coinciden con los de SQL."
+      }
+    ],
+    "ambiguedades": [
+      "El backup usa SERIAL y FK entre INT: es sintaxis de PostgreSQL. La teoría del banco usa MySQL (DELIMITER $$). Confirma con tu docente qué motor se usará en el examen.",
+      "El PDF pide el nivel 'Básico' (con tilde) pero los datos del backup dicen 'Basico': normaliza antes de crear el CHECK.",
+      "Punto 3 ('mínimo 10, máximo 60 estudiantes'): ambiguo. La referencia lo implementa como CHECK sobre cupos_disponibles; sé consciente del efecto con el trigger y defiéndelo.",
+      "El punto 8 dice 'colecciones eventos y clientes' pero describe Estudiantes y Cursos (y luego numera 7.2): es un error de copia; se crean estudiantes y cursos.",
+      "La consulta 9c requiere cruzar con las matrículas, que están en SQL, no en Mongo."
+    ],
+    "recursos": [
+      "data/recursos/cursos_backup.sql",
+      "data/recursos/referencia_n2_postgres.sql",
+      "data/recursos/referencia_n2_mongo.js"
+    ]
+  },
+  {
+    "codigo": "P3",
+    "nucleo": 3,
+    "titulo": "Reserva de mesas — Angular + Firebase (Sistemas Concurrentes Web)",
+    "tecnologia": "Angular (standalone, app.routes.ts, app.config.ts), AngularFire, Firebase Authentication, Firestore, Bootstrap",
+    "tiempo_sugerido_min": 180,
+    "enunciado": "Aplicación web Angular + Firebase para visualizar restaurantes y reservar mesas. Rutas: Inicio, Restaurantes, Reservas, Acerca De y Página No Encontrada; todas con navbar y footer. Login desde la navbar con correo/contraseña y con Google (ambos por Firebase Authentication) y opción de cerrar sesión; el registro de usuarios no es obligatorio. Inicio: bienvenida y restaurantes recomendados del día en tarjetas (imagen, nombre, tipo de comida). Restaurantes: lista de todos, mínimo 3 cargados desde Firestore (pueden crearse a mano), con la estructura de BD y los types bien diseñados; cada uno en tarjeta (imagen, nombre, tipo) que lleva a la página individual (nombre, imagen, descripción, tipo, calificación, horarios disponibles). El usuario selecciona un horario y se habilita el botón Reservar; tras reservar va a Reservas, que muestra restaurante, fecha/día y horario, solo del usuario autenticado. Auth Guard para impedir que usuarios no autenticados accedan a Reservas o reserven. Responsive. Uso correcto de componentes, servicios, guards y rutas.",
+    "rubrica": [
+      {
+        "id": "P3-R1",
+        "criterio": "Rutas y navegación",
+        "puntaje": 1.5,
+        "tareas": [
+          {
+            "id": "P3-R1-T1",
+            "texto": "Rutas en app.routes.ts: '', 'restaurantes', 'restaurantes/:id', 'reservas', 'acerca-de' y '**' (404)",
+            "verificacion": "Cada URL carga su componente; una URL inventada muestra el 404"
+          },
+          {
+            "id": "P3-R1-T2",
+            "texto": "Navbar y footer visibles en todas las rutas (layout en app.component con <router-outlet>)",
+            "verificacion": "Navbar y footer aparecen en las 5 páginas"
+          },
+          {
+            "id": "P3-R1-T3",
+            "texto": "Enlaces con routerLink y routerLinkActive",
+            "verificacion": "Navegar no recarga la página completa"
+          }
+        ]
+      },
+      {
+        "id": "P3-R2",
+        "criterio": "Inicio de sesión con Firebase",
+        "puntaje": 1.5,
+        "tareas": [
+          {
+            "id": "P3-R2-T1",
+            "texto": "Configurar provideFirebaseApp, provideAuth y provideFirestore en app.config.ts",
+            "verificacion": "La app arranca sin errores de Firebase"
+          },
+          {
+            "id": "P3-R2-T2",
+            "texto": "Login con correo y contraseña (signInWithEmailAndPassword); crear el usuario en la consola de Firebase",
+            "verificacion": "Un usuario válido entra; uno inválido muestra error"
+          },
+          {
+            "id": "P3-R2-T3",
+            "texto": "Login con Google (signInWithPopup + GoogleAuthProvider)",
+            "verificacion": "El popup de Google inicia sesión"
+          },
+          {
+            "id": "P3-R2-T4",
+            "texto": "Cerrar sesión (signOut) y navbar que cambia según el estado (authState / user$)",
+            "verificacion": "Tras cerrar sesión la navbar vuelve a mostrar 'Iniciar sesión'"
+          }
+        ]
+      },
+      {
+        "id": "P3-R3",
+        "criterio": "Página de inicio",
+        "puntaje": 0.5,
+        "tareas": [
+          {
+            "id": "P3-R3-T1",
+            "texto": "Sección de bienvenida y tarjetas de restaurantes recomendados (imagen, nombre, tipo)",
+            "verificacion": "Las tarjetas muestran datos reales de Firestore"
+          }
+        ]
+      },
+      {
+        "id": "P3-R4",
+        "criterio": "Página de restaurantes",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P3-R4-T1",
+            "texto": "Colección restaurantes en Firestore con 3 o más documentos e interface Restaurante tipada",
+            "verificacion": "La consola de Firebase muestra 3 o más documentos"
+          },
+          {
+            "id": "P3-R4-T2",
+            "texto": "Servicio que lee la colección con collectionData",
+            "verificacion": "La lista se actualiza en tiempo real"
+          },
+          {
+            "id": "P3-R4-T3",
+            "texto": "Tarjetas (imagen, nombre, tipo) con enlace a restaurantes/:id",
+            "verificacion": "Clic en una tarjeta abre su detalle"
+          }
+        ]
+      },
+      {
+        "id": "P3-R5",
+        "criterio": "Página individual del restaurante",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P3-R5-T1",
+            "texto": "Leer el documento por id (ActivatedRoute + docData)",
+            "verificacion": "La URL /restaurantes/ID carga el restaurante correcto"
+          },
+          {
+            "id": "P3-R5-T2",
+            "texto": "Mostrar nombre, imagen, descripción, tipo, calificación y horarios",
+            "verificacion": "Los 6 datos son visibles"
+          }
+        ]
+      },
+      {
+        "id": "P3-R6",
+        "criterio": "Selección de horarios",
+        "puntaje": 1.5,
+        "tareas": [
+          {
+            "id": "P3-R6-T1",
+            "texto": "Mostrar horarios como opciones seleccionables (radio o botones)",
+            "verificacion": "Se puede seleccionar un horario y queda resaltado"
+          },
+          {
+            "id": "P3-R6-T2",
+            "texto": "Botón Reservar deshabilitado hasta seleccionar ([disabled]=\"!horarioSeleccionado\")",
+            "verificacion": "Sin horario el botón está inactivo; con horario se habilita"
+          },
+          {
+            "id": "P3-R6-T3",
+            "texto": "Al reservar: addDoc en la colección reservas y navegar a /reservas",
+            "verificacion": "Aparece un documento nuevo en Firestore y se abre Reservas"
+          }
+        ]
+      },
+      {
+        "id": "P3-R7",
+        "criterio": "Página de reservas",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P3-R7-T1",
+            "texto": "Guardar en cada reserva: userId (uid), restauranteId, restauranteNombre, fecha y horario",
+            "verificacion": "El documento en Firestore tiene esos campos"
+          },
+          {
+            "id": "P3-R7-T2",
+            "texto": "Listar solo las reservas del usuario (query con where('userId','==',uid))",
+            "verificacion": "Con otro usuario no se ven las reservas del primero"
+          }
+        ]
+      },
+      {
+        "id": "P3-R8",
+        "criterio": "Guardianes de seguridad",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P3-R8-T1",
+            "texto": "CanActivateFn que consulta el estado de autenticación y redirige a inicio/login si no hay sesión",
+            "verificacion": "Sin sesión, /reservas redirige"
+          },
+          {
+            "id": "P3-R8-T2",
+            "texto": "Impedir reservar sin sesión",
+            "verificacion": "Un usuario anónimo no puede crear reservas"
+          }
+        ]
+      },
+      {
+        "id": "P3-R9",
+        "criterio": "Responsividad",
+        "puntaje": 0.5,
+        "tareas": [
+          {
+            "id": "P3-R9-T1",
+            "texto": "Grid de Bootstrap (row, col-12 col-md-6 col-lg-4) en tarjetas y navbar colapsable",
+            "verificacion": "En vista móvil (F12) todo se acomoda"
+          }
+        ]
+      },
+      {
+        "id": "P3-R10",
+        "criterio": "Uso de Angular",
+        "puntaje": 0.5,
+        "tareas": [
+          {
+            "id": "P3-R10-T1",
+            "texto": "Componentes por página, servicios (AuthService, RestauranteService, ReservaService) y guard organizados en carpetas",
+            "verificacion": "El código está separado por responsabilidad"
+          }
+        ]
+      }
+    ],
+    "defensa": [
+      {
+        "pregunta": "¿Diferencia entre docData y collectionData?",
+        "clave": "docData lee un documento por su referencia; collectionData lee una colección completa y emite en tiempo real."
+      },
+      {
+        "pregunta": "¿Cómo funciona tu guard y qué devuelve?",
+        "clave": "Es un CanActivateFn que observa el estado de autenticación y devuelve true si hay sesión o un UrlTree que redirige si no la hay."
+      },
+      {
+        "pregunta": "Si filtras las reservas por userId en el cliente, ¿es suficiente para la seguridad?",
+        "clave": "No. El cliente se puede manipular. Deben complementarse con reglas de seguridad de Firestore que validen request.auth.uid."
+      },
+      {
+        "pregunta": "¿Dónde se registran los providers de Firebase en una app Angular standalone?",
+        "clave": "En app.config.ts con provideFirebaseApp, provideAuth y provideFirestore."
+      },
+      {
+        "pregunta": "¿Cómo logras que el botón Reservar se habilite solo al elegir un horario?",
+        "clave": "Se enlaza [disabled]=\"!horarioSeleccionado\" a una propiedad del componente que se asigna al seleccionar."
+      }
+    ],
+    "ambiguedades": [
+      "La numeración del PDF salta del punto 18 al 23 y del 23 al 25: pueden faltar requisitos (19-22 y 24). Pregunta a tu docente.",
+      "La rúbrica describe 4 niveles (Excelente, Bueno, Regular, Deficiente) pero no da los puntos de cada nivel; la app estima con criterios de tareas."
+    ],
+    "recursos": []
+  },
+  {
+    "codigo": "P4",
+    "nucleo": 4,
+    "titulo": "App móvil de playlists — login Firebase + API de canciones",
+    "tecnologia": "Libre (cualquier IDE, tecnología o lenguaje). Obligatorio: Firebase para la base de datos y la autenticación. API: https://jritsqmet.github.io/web-api/assets/json/musica2.json",
+    "tiempo_sugerido_min": 180,
+    "enunciado": "Aplicativo móvil para gestionar canciones: registrar una canción en una playlist y determinar el tiempo total de la playlist. Requerimientos: login que permita entrar solo a usuarios registrados; dos sistemas de navegación diferentes; información leída desde la API asignada; información de cada playlist almacenada en una base de datos (Firebase). Pantallas según los wireframes: Inicio (dos botones: LOGIN y DESARROLLADOR; el segundo lleva a los datos del estudiante); Login (logo, campos Email y Password, botón Log in; usuarios ya registrados); Canciones (lista de todas las canciones de la API con nombre, tiempo e imagen; al seleccionar una canción aparece un diálogo 'Seleccionar una lista' con las playlists del usuario y opción Cancelar); Playlist (campo 'Nueva Playlist', botón 'Crear Lista' y lista de playlists creadas; al tocar una se abre un modal con sus canciones, el 'Tiempo' total y el botón CERRAR).",
+    "rubrica": [
+      {
+        "id": "P4-R1",
+        "criterio": "Navegación",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P4-R1-T1",
+            "texto": "Sistema de navegación 1: stack (Inicio -> Login / Desarrollador)",
+            "verificacion": "Los botones Inicio llevan a Login y a Desarrollador, con retroceso"
+          },
+          {
+            "id": "P4-R1-T2",
+            "texto": "Sistema de navegación 2 distinto tras el login: tabs o drawer con Canciones y Playlist",
+            "verificacion": "Tras iniciar sesión se cambia entre Canciones y Playlist sin volver al login"
+          },
+          {
+            "id": "P4-R1-T3",
+            "texto": "Pantalla Desarrollador con los datos del estudiante",
+            "verificacion": "Muestra nombre y datos del estudiante"
+          }
+        ]
+      },
+      {
+        "id": "P4-R2",
+        "criterio": "Seguridad",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P4-R2-T1",
+            "texto": "Firebase Authentication con correo y contraseña; usuarios creados de antemano en la consola de Firebase",
+            "verificacion": "Un usuario registrado entra; uno inexistente recibe error"
+          },
+          {
+            "id": "P4-R2-T2",
+            "texto": "Bloquear Canciones y Playlist sin sesión y ofrecer cerrar sesión",
+            "verificacion": "Sin sesión no se accede a las pantallas internas"
+          }
+        ]
+      },
+      {
+        "id": "P4-R3",
+        "criterio": "Creación de listas",
+        "puntaje": 2.0,
+        "tareas": [
+          {
+            "id": "P4-R3-T1",
+            "texto": "Formulario 'Nueva Playlist' con nombre libre y botón 'Crear Lista'",
+            "verificacion": "Escribir un nombre y pulsar crea la playlist"
+          },
+          {
+            "id": "P4-R3-T2",
+            "texto": "Guardar la playlist en Firebase con userId",
+            "verificacion": "El documento aparece en Firestore o Realtime Database"
+          },
+          {
+            "id": "P4-R3-T3",
+            "texto": "Listar las playlists del usuario",
+            "verificacion": "Al reabrir la app siguen apareciendo las playlists"
+          }
+        ]
+      },
+      {
+        "id": "P4-R4",
+        "criterio": "Visualización de elementos",
+        "puntaje": 2.0,
+        "tareas": [
+          {
+            "id": "P4-R4-T1",
+            "texto": "Consumir la API (fetch o HttpClient) y mostrar nombre, tiempo e imagen de cada canción",
+            "verificacion": "La lista muestra todas las canciones de la API"
+          },
+          {
+            "id": "P4-R4-T2",
+            "texto": "Estados de carga y de error al consumir la API",
+            "verificacion": "Con la red apagada aparece un mensaje de error, no una pantalla en blanco"
+          },
+          {
+            "id": "P4-R4-T3",
+            "texto": "Modal de la playlist con canciones y tiempo total, más botón CERRAR",
+            "verificacion": "Al tocar una playlist se ve el modal y se cierra con CERRAR"
+          }
+        ]
+      },
+      {
+        "id": "P4-R5",
+        "criterio": "Almacenar datos (canciones)",
+        "puntaje": 3.0,
+        "tareas": [
+          {
+            "id": "P4-R5-T1",
+            "texto": "Al tocar una canción, diálogo 'Seleccionar una lista' con las playlists y opción Cancelar",
+            "verificacion": "Aparece el diálogo con las playlists del usuario"
+          },
+          {
+            "id": "P4-R5-T2",
+            "texto": "Guardar la canción elegida dentro de la playlist en la BD (arreglo canciones o subcolección) con nombre, duración e imagen",
+            "verificacion": "La canción queda en el documento de esa playlist"
+          },
+          {
+            "id": "P4-R5-T3",
+            "texto": "Calcular el tiempo total sumando las duraciones (convertir mm:ss a segundos, sumar y formatear)",
+            "verificacion": "3 canciones de 03:25 dan 10:15"
+          },
+          {
+            "id": "P4-R5-T4",
+            "texto": "Persistencia: los datos siguen tras cerrar y reabrir la app",
+            "verificacion": "Tras reiniciar, la playlist conserva sus canciones"
+          }
+        ]
+      },
+      {
+        "id": "P4-R6",
+        "criterio": "Diseño",
+        "puntaje": 1.0,
+        "tareas": [
+          {
+            "id": "P4-R6-T1",
+            "texto": "Interfaz limpia y consistente con la estructura de los wireframes (listas, modales, botones)",
+            "verificacion": "Las pantallas se parecen a las imágenes del enunciado"
+          }
+        ]
+      }
+    ],
+    "defensa": [
+      {
+        "pregunta": "¿Cómo calculaste el tiempo total de la playlist?",
+        "clave": "Convierto cada duración mm:ss a segundos, sumo todas y formateo el total otra vez a mm:ss."
+      },
+      {
+        "pregunta": "¿Dónde guardas las playlists y cómo garantizas que cada usuario vea solo las suyas?",
+        "clave": "En Firebase con el uid en cada documento; consulto por userId y las reglas de seguridad validan request.auth.uid."
+      },
+      {
+        "pregunta": "¿Qué dos sistemas de navegación implementaste y por qué?",
+        "clave": "Stack para el flujo Inicio -> Login/Desarrollador y tabs o drawer para las pantallas internas tras el login."
+      },
+      {
+        "pregunta": "¿Qué pasa si la API falla o tarda en responder?",
+        "clave": "Se muestra un indicador de carga y un mensaje de error con opción de reintentar; nunca una pantalla en blanco."
+      },
+      {
+        "pregunta": "¿Por qué el login permite solo usuarios registrados y cómo lo garantizas?",
+        "clave": "Se usa Firebase Authentication con correo y contraseña sin autoregistro; las pantallas internas se protegen verificando la sesión."
+      }
+    ],
+    "ambiguedades": [
+      "El PDF menciona Screen-Servicios y Screen-Generar_Cita tras el login: son sobras de otro examen. Las pantallas reales son Canciones y Playlist.",
+      "Pide 'dos sistemas de navegación diferentes según las imágenes', pero los wireframes muestran pantallas, no el tipo de navegación. Interpretación usada: stack + tabs/drawer. Confírmalo con tu docente.",
+      "El formato del campo de duración de la API (mm:ss o segundos) no está verificado: inspecciona el JSON antes de programar el cálculo del tiempo total.",
+      "La tecnología es libre; con Angular, Ionic + AngularFire es una opción natural (solo sugerencia)."
+    ],
+    "recursos": [
+      "https://jritsqmet.github.io/web-api/assets/json/musica2.json"
+    ]
+  }
+]

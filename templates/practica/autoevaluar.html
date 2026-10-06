@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block titulo %}Autoevaluación {{ caso.codigo }}{% endblock %}
+{% block contenido %}
+<div class="mb-3">
+  <span class="badge text-bg-dark">{{ caso.codigo }}</span>
+  <h1 class="h4 d-inline ms-1">Autoevaluación · {{ caso.titulo }}</h1>
+  <div class="small text-muted">Tiempo usado: {{ intento.duracion_segundos|mmss }} de {{ intento.tiempo_limite_segundos|mmss }}</div>
+</div>
+
+<div class="alert alert-warning">
+  <strong><i class="bi bi-shield-check"></i> Sé honesto/a:</strong> {{ aviso }}
+  El puntaje sugerido sale de tu checklist; <strong>tú confirmas</strong> el puntaje final de cada criterio
+  (0 al máximo, en pasos de 0.25). El veredicto descuenta {{ cfg.DESCUENTO_AUTOEVALUACION }} puntos a toda nota autoevaluada.
+</div>
+
+<form method="post" action="{{ url_for('practica.autoevaluar', intento_id=intento.id) }}" novalidate>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  {% for f in filas %}
+  {% set c = f.criterio %}
+  <div class="card mb-3 {% if errores.get(c.id) %}border-danger{% endif %}">
+    <div class="card-header d-flex flex-wrap justify-content-between gap-1">
+      <span class="fw-semibold">{{ c.id }} · {{ c.criterio }}</span>
+      <span class="small">Tareas marcadas: {{ f.hechas }}/{{ c.tareas|length }}</span>
+    </div>
+    <div class="card-body">
+      <details class="small mb-3">
+        <summary>Ver tareas de este criterio</summary>
+        <ul class="mb-0 mt-2">
+          {% for t in c.tareas %}
+          <li class="{% if t.id in tareas_ok %}text-success{% else %}text-muted{% endif %}">
+            {% if t.id in tareas_ok %}✓{% else %}○{% endif %} {{ t.texto }} <em>— {{ t.verificacion }}</em>
+          </li>
+          {% endfor %}
+        </ul>
+      </details>
+      <div class="row g-2 align-items-start">
+        <div class="col-6 col-md-3">
+          <div class="small text-muted">Sugerido</div>
+          <div class="fs-5">{{ "%.2f"|format(f.sugerido) }} <small class="text-muted">/ {{ "%g"|format(c.puntaje) }}</small></div>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label small text-muted mb-0" for="puntaje_{{ c.id }}">Puntaje final</label>
+          <input type="number" class="form-control {% if errores.get(c.id) %}is-invalid{% endif %}" id="puntaje_{{ c.id }}"
+                 name="puntaje_{{ c.id }}" min="0" max="{{ c.puntaje }}" step="0.25" value="{{ f.valor }}" required>
+          {% if errores.get(c.id) %}<div class="invalid-feedback d-block">{{ errores[c.id] }}</div>{% endif %}
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label small text-muted mb-0" for="comentario_{{ c.id }}">Comentario (opcional)</label>
+          <textarea class="form-control" rows="2" id="comentario_{{ c.id }}" name="comentario_{{ c.id }}" maxlength="2000">{{ f.comentario }}</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <button class="btn btn-primary btn-lg" type="submit"><i class="bi bi-check2-all"></i> Confirmar autoevaluación</button>
+</form>
+{% endblock %}

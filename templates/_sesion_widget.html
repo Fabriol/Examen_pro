@@ -1,0 +1,28 @@
+{# Cronómetro de una sesión del plan (static/js/sesion.js). Requiere la variable `sesion`. #}
+{% if sesion %}
+<div id="sesion-estudio" class="card border-info shadow-sm mb-3"
+     data-sesion-id="{{ sesion.id }}"
+     data-minutos="{{ sesion.minutos_planificados }}"
+     data-estado="{{ sesion.estado }}"
+     data-url-terminar="{{ url_for('plan.terminar_sesion', sesion_id=sesion.id) }}"
+     data-url-plan="{{ url_for('plan.index') }}">
+  <div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-2 py-2">
+    <div>
+      <div class="small text-muted">Sesión del plan · {{ sesion.fecha|fecha_corta }}</div>
+      <div class="fw-semibold">{{ sesion.titulo }}</div>
+      {% if sesion.estado != "pendiente" %}<div class="small text-success">Esta sesión ya está {{ sesion.estado }}.</div>{% endif %}
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <span id="sesion-reloj" class="badge text-bg-info fs-5 font-monospace" title="Tiempo restante de la sesión">--:--</span>
+      {% if sesion.estado == "pendiente" %}
+      <button type="button" id="sesion-terminar" class="btn btn-info">
+        <i class="bi bi-check2-circle"></i> Terminar sesión
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  <div id="sesion-pausa" class="alert alert-light border-top rounded-0 rounded-bottom mb-0 py-1 small d-none">
+    Llevas 50 minutos: toma una pausa sugerida de 10 minutos.
+  </div>
+</div>
+{% endif %}

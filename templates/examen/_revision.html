@@ -1,0 +1,66 @@
+{# Revisión de un intento: recibe `revision` = construir_revision(intento).
+   Correcta SIEMPRE en verde ✓; elegida errónea en rojo ✗; sin responder en gris. #}
+<div class="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="Filtrar revisión">
+  <button type="button" class="btn btn-sm btn-outline-dark active" data-filtro="todas">Todas ({{ revision|length }})</button>
+  <button type="button" class="btn btn-sm btn-outline-danger" data-filtro="incorrecta">Incorrectas ({{ revision|selectattr('resultado', 'equalto', 'incorrecta')|list|length }})</button>
+  <button type="button" class="btn btn-sm btn-outline-secondary" data-filtro="blanco">En blanco ({{ revision|selectattr('resultado', 'equalto', 'blanco')|list|length }})</button>
+  <button type="button" class="btn btn-sm btn-outline-success" data-filtro="correcta">Correctas ({{ revision|selectattr('resultado', 'equalto', 'correcta')|list|length }})</button>
+</div>
+
+<div id="lista-revision">
+{% for item in revision %}
+  {% set p = item.pregunta %}
+  {% if item.resultado == "correcta" %}
+    {% set borde = "border-success" %}{% set insignia = "text-bg-success" %}{% set texto = "Correcta" %}
+  {% elif item.resultado == "incorrecta" %}
+    {% set borde = "border-danger" %}{% set insignia = "text-bg-danger" %}{% set texto = "Incorrecta" %}
+  {% else %}
+    {% set borde = "border-secondary" %}{% set insignia = "text-bg-secondary" %}{% set texto = "Sin responder" %}
+  {% endif %}
+  <div class="card mb-3 item-revision {{ borde }} {% if item.resultado == 'blanco' %}bg-body-tertiary{% endif %}" data-resultado="{{ item.resultado }}">
+    <div class="card-header d-flex flex-wrap justify-content-between gap-1 {% if item.resultado == 'blanco' %}text-secondary{% endif %}">
+      <span class="fw-semibold">Pregunta {{ item.numero }} <small class="text-muted fw-normal">· {{ p.codigo }} · {{ p.tema }} · {{ p.nivel|nivel_legible }}</small></span>
+      <span class="badge {{ insignia }}">{{ texto }}</span>
+    </div>
+    <div class="card-body">
+      <div class="enunciado-pregunta mb-3">{{ p.enunciado }}</div>
+      <ul class="list-group">
+        {% for op in item.opciones %}
+          {% if op.estado == "correcta" %}
+          <li class="list-group-item text-success border-success bg-success-subtle opcion-revision">
+            <strong>{{ op.letra }}.</strong> <span class="texto-opcion">{{ op.texto }}</span>
+            <span class="float-end fw-bold" aria-label="Respuesta correcta">✓{% if op.es_elegida %} tu respuesta{% endif %}</span>
+          </li>
+          {% elif op.estado == "erronea" %}
+          <li class="list-group-item text-danger border-danger bg-danger-subtle opcion-revision">
+            <strong>{{ op.letra }}.</strong> <span class="texto-opcion">{{ op.texto }}</span>
+            <span class="float-end fw-bold" aria-label="Tu respuesta, incorrecta">✗ tu respuesta</span>
+          </li>
+          {% else %}
+          <li class="list-group-item opcion-revision {% if item.resultado == 'blanco' %}text-secondary{% endif %}">
+            <strong>{{ op.letra }}.</strong> <span class="texto-opcion">{{ op.texto }}</span>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% if item.segundos %}<p class="small text-muted mt-2 mb-0">Tiempo empleado: {{ item.segundos|mmss }}</p>{% endif %}
+    </div>
+  </div>
+{% endfor %}
+</div>
+
+<script>
+  (function () {
+    const botones = document.querySelectorAll('[data-filtro]');
+    botones.forEach(function (b) {
+      b.addEventListener('click', function () {
+        botones.forEach(function (x) { x.classList.remove('active'); });
+        b.classList.add('active');
+        const filtro = b.dataset.filtro;
+        document.querySelectorAll('.item-revision').forEach(function (card) {
+          card.classList.toggle('d-none', filtro !== 'todas' && card.dataset.resultado !== filtro);
+        });
+      });
+    });
+  })();
+</script>
